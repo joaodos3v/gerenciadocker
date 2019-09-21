@@ -32,11 +32,11 @@ def container_iniciar():
     container.distro = distro
     container.versao = versao
     container_id = container.iniciar()
-    
+
     if container_id:
         return jsonify({
-            "retorno": 1
-            "mensagem": "Container iniciado"
+            "retorno": 1,
+            "mensagem": "Container iniciado",
             "container_id": container_id
         })
     
