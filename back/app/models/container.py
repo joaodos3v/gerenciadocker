@@ -2,7 +2,7 @@ import subprocess
 
 class Container:
 
-    id = 'xyz'
+    id = ''
     distro = ''
     versao = ''
 
