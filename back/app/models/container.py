@@ -6,7 +6,7 @@ class Container:
     distro = ''
     versao = ''
 
-    def executar_comando(comando):
+    def executar_comando(self, comando):
         container_id = None
         try:
             container_id = subprocess.check_output(comando, shell=True).decode('utf-8').strip()
