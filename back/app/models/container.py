@@ -6,19 +6,21 @@ class Container:
     distro = ''
     versao = ''
 
-    def executar_comando(comando):        
-        retorno = subprocess.check_output(comando, shell=True).decode('utf-8').strip()
-        return retorno
+    def executar_comando(comando):
+        container_id = None
+        try:
+            container_id = subprocess.check_output(comando, shell=True).decode('utf-8').strip()
+        except:
+            pass
+        return container_id
 
     def iniciar(self):
         comando = 'docker run -dit %s:%s' % (self.distro, self.versao)
-        container_id = self.executar_comando(comando)
-        if container_id:
-            return container_id
-        return None         
+        return self.executar_comando(comando)
 
     def parar(self):
-        pass
-
-    def retomar(self):
-        pass
+        comando = 'docker stop %s' % self.id
+        container_id = self.executar_comando(comando)
+        if container_id:
+            return 1
+        return 0
