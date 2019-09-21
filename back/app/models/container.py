@@ -2,15 +2,23 @@ import subprocess
 
 class Container:
 
-    def __init__(self, distribuicao):
-        self.distribuicao = distribuicao
+    id = 'xyz'
+    distro = ''
+    versao = ''
+
+    def executar_comando(comando):        
+        retorno = subprocess.check_output(comando, shell=True).decode('utf-8').strip()
+        return retorno
 
     def iniciar(self):
-        comando = 'docker run -dit %s' % self.distribuicao
-        retorno = subprocess.check_output(comando, shell=True)        
-    
-    def parar():
+        comando = 'docker run -dit %s:%s' % (self.distro, self.versao)
+        container_id = self.executar_comando(comando)
+        if container_id:
+            return container_id
+        return None         
+
+    def parar(self):
         pass
 
-    def retomar():
+    def retomar(self):
         pass
