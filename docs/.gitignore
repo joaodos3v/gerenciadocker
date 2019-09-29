@@ -37,3 +37,5 @@
 settings.json
 script.md
 script.html
+*.dvi
+*.ps
