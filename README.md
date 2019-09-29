@@ -20,11 +20,11 @@ Repositório criado para hospedar o trabalho da disciplina de Sistemas Distribu�
 #### Deviam estar prontos
 
 - [X] `04/09` => Capa
-- [ ] `04/09` => Descrição do problema
-- [ ] `04/09` => Justificativa do trabalho
-- [ ] `04/09` => Objetivos a serem atingidos
+- [X] `04/09` => Descrição do problema
+- [X] `04/09` => Justificativa do trabalho
+- [X] `04/09` => Objetivos a serem atingidos
 - [ ] `18/09` => Definir o layout da página utilizando o Figma
-- [ ] `18/09` => Definir quais serão os sistemas operacionais disponíveis para serem instanciados
+- [X] `18/09` => Definir quais serão os sistemas operacionais disponíveis para serem instanciados
 - [ ] `18/09` => Fazer o download de todas as imagens dos sistemas operacionais que estarão disponíveis
 
 #### A fazer
