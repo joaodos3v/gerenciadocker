@@ -16,6 +16,7 @@
 % INCLUI ARQUIVOS DE CONFIGURAÇÕES-------------------------------------------------------------------------------
 \include{configs/pacotes}
 \include{configs/configuracoes-pdf}
+\include{configs/constantes}
 
 
 % INCLUI ARQUIVOS DO DESENVOLVIMENTO DO DOCUMENTO (PRÉ-TEXTUAIS, TEXTUAIS, PÓS-TEXTUAIS)-----------------------
@@ -41,7 +42,13 @@
     
     % INSERE ELEMENTOS TEXTUAIS
     \include{content/textuais/introducao}                		            % Introdução
+    \include{content/textuais/descricao_problema}          		            % Descrição do Problema
     \include{content/textuais/conclusao}                   		            % Conclusão
+
+    \postextual
+
+    % INSERE ELEMENTOS PÓS-TEXTUAIS
+    \include{content/pos-textuais/referencias}           			        % Referências
 
 
 \end{document}
