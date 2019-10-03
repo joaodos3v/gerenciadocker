@@ -78,3 +78,17 @@ def container_parar():
         "status": container_parado,
         "mensagem": mensagem
     })
+
+@app.route("/container/consultar/<container_id>", methods=['GET'])
+def container_consultar(container_id):            
+    container = Container()
+    container.id = container_id
+    informacoes = container.consultar()
+    arr_informacoes = informacoes.split(" ")
+
+    return jsonify({
+        "status": 1,
+        "mensagem": "Informações localizadas",
+        "cpu": arr_informacoes[1],
+        "ram": arr_informacoes[2]
+    })
