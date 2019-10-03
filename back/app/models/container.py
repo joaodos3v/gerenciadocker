@@ -24,3 +24,9 @@ class Container:
         if container_id:
             return 1
         return 0
+
+    def consultar(self):
+        comando = "docker stats --no-stream --format 'table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}' %s | grep %s | awk '{ print $1, $2, $3 }'" % (self.id, self.id)
+        informacoes = self.executar_comando(comando)
+        if informacoes:
+            return informacoes
