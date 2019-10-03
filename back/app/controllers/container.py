@@ -85,7 +85,6 @@ def container_consultar(container_id):
     container.id = container_id
     informacoes = container.consultar()
     arr_informacoes = informacoes.split(" ")
-
     return jsonify({
         "status": 1,
         "mensagem": "Informações localizadas",
