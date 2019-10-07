@@ -1,0 +1,18 @@
+ - Ou todos efetivam, ou nenhum
+ - [1PC] => o coordenador comunica a decisão (se efetiva ou se aborta)
+    + basicamente, as demais máquinas apenas "obedecem"
+- [2PC] => agora, os participantes tem direito de cancelar a transação
+    + 1ª fase = cada participante diz se quer "efetivar" ou "abortar" a transação
+    + 2ª fase = se 1 máquina só decidiu "abortar", então a transação é cancelada (decisão conjunta)
+        ~ comunicação entre: cliente <-> coordenador; coordenador <-> participantes
+        ~ se o cliente ou o participante decide abortar, o coordenador informa os demais imediatamente
+- [3PC] => 
+
+oba
+
+[3PC]
+Coordenador recebe e reúne os votos
+◦ Se não houver falhas e todos os votos foram em ”sim”, o coordenador envia doCommit
+◦ Caso contrário, o coordenador decide cancelar e envia doAbort a quem votou ”sim”
+◦ Participantes esperam o doCommit ou doAbort
+◦ Caso solicitação seja de doCommit, retornam a resposta haveCommited ao coordenador
