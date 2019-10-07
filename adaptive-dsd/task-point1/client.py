@@ -49,8 +49,8 @@ def TratarResposta(opcao):
 
 def IniciarExecucao():
     # host = ['192.168.0.0', '192.168.0.0', '192.168.0.0']
-    hosts = ['192.168.1.113', '192.168.1.158', '192.168.1.109']
-    porta = 12348
+    hosts = ['localhost']
+    porta = 12349
     global valores
 
     conexoes = []

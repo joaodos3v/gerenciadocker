@@ -1,1 +1,0 @@
-print("deu bão")
