@@ -37,9 +37,9 @@ def IniciarExecucao():
     while True:
         tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        host = CapturarIPHost()
-        #host = input("Qual o ip do servidor? ")
-        porta = 12348
+        #host = CapturarIPHost()
+        host = input("Qual o ip do servidor? ")
+        porta = 12349
         tupla = (host, porta)
         tcp.bind(tupla)
         tcp.listen(1)

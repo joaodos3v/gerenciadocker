@@ -14,14 +14,14 @@ def EnviaRequisicao(cliente, valorA, valorB):
     cliente.send(pickle.dumps(infos))
     try:
         retorno = cliente.recv(1024)
-        valor = float(pickle.loads(retorno))
+        valor = pickle.loads(retorno)
         print("Resultado da transação: %s" % valor)
     except Exception as e:
         print("========> Erro: % s" % e)
 
 def IniciarExecucao():
     ip = 'localhost'
-    porta = 12348
+    porta = int(input("Informe a porta para comunicar-se com o COORDENADOR: ")    )
 
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     cliente.connect((ip, porta))
