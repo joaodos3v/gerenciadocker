@@ -54,22 +54,23 @@ function LandingPage() {
                     className="image-container image-left"
                     style={{
                       backgroundImage:
-                        "url(" + require("./assets/img/login.jpg") + ")"
+                        "url(" + require("./assets/img/img-background3.jpg") + ")"
                     }}
                   >
                     <p className="blockquote blockquote-info">
-                      "Over the span of the satellite record, Arctic sea ice has
-                      been declining significantly, while sea ice in the
-                      Antarctichas increased very slightly" <br></br>
+                      "O <span className="font-weight-bold">Gerenciadocker</span>, me
+                      ajudou a orquestrar meus <i>containers</i>, dividir a
+                      responsabilidade de cada ferramenta e, então,
+                      finalmente vencer Os Selvagens." <br></br>
                       <br></br>
-                      <small>-NOAA</small>
+                      <small>- JON SNOW</small>
                     </p>
                   </div>
                   <div
                     className="image-container"
                     style={{
                       backgroundImage:
-                        "url(" + require("./assets/img/bg3.jpg") + ")"
+                        "url(" + require("./assets/img/img-background1.jpg") + ")"
                     }}
                   ></div>
                 </Col>
@@ -78,41 +79,34 @@ function LandingPage() {
                     className="image-container image-right"
                     style={{
                       backgroundImage:
-                        "url(" + require("./assets/img/bg1.jpg") + ")"
+                        "url(" + require("./assets/img/img-background2.jpg") + ")"
                     }}
                   ></div>
-                  <h3>
-                    So what does the new record for the lowest level of winter
-                    ice actually mean
-                  </h3>
+                  <h3>Então, quais as vantagens de utilizar a nossa ferramenta?</h3>
                   <p>
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens with climate change. Even if the
-                    Arctic continues to be one of the fastest-warming regions of
-                    the world, it will always be plunged into bitterly cold
-                    polar dark every winter. And year-by-year, for all kinds of
-                    natural reasons, there’s huge variety of the state of the
-                    ice.
+                    Já chega de ter dores de cabeça todas as vezes
+                    que um novo desenvolvedor é contratado na equipe
+                    e ele precisa configurar o ambiente para dar sequência
+                    ao projeto. Já chega de ter problemas ao colocar a 
+                    aplicação em produção porque a versão de uma biblioteca
+                    estava errada. Já chega de se preocupar com qual
+                    <i> framework </i> você tem instalado no seu computador.
                   </p>
                   <p>
-                    For a start, it does not automatically follow that a record
-                    amount of ice will melt this summer. More important for
-                    determining the size of the annual thaw is the state of the
-                    weather as the midnight sun approaches and temperatures
-                    rise. But over the more than 30 years of satellite records,
-                    scientists have observed a clear pattern of decline,
-                    decade-by-decade.
+                    O conceito de conteinerização chegou para resolver esse
+                    problema e permitir que ambientes inteiros e funcionais
+                    de uma aplicação ganhem em mobilidade e praticidade, já
+                    que com alguns poucos comandos, você consegue exportá-los
+                    e importá-los, por exemplo. Mas e se, ao
+                    invés de ter que aprender esses comandos, você simplesmente
+                    clicasse em um botão?
                   </p>
                   <p>
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens with climate change. Even if the
-                    Arctic continues to be one of the fastest-warming regions of
-                    the world, it will always be plunged into bitterly cold
-                    polar dark every winter. And year-by-year, for all kinds of
-                    natural reasons, there’s huge variety of the state of the
-                    ice.
+                    Essa é a ideia do <span className="font-weight-bold">Gerenciadocker</span>,
+                    tornar mais fácil o uso dessa ferramenta tão poderosa que é o <i>docker</i>.
+                    Com nossa aplicação, você consegue orquestrar todos os seus <i>containers </i>
+                    por meio de uma interface minimalista e simples, que fornece todas as opções
+                    necessárias para implantar esse tecnologia recente e inovadora na sua empresa!
                   </p>
                 </Col>
               </Row>
