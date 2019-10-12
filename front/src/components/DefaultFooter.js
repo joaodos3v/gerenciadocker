@@ -15,26 +15,10 @@ function DefaultFooter() {
             <ul>
               <li>
                 <a
-                  href="https://www.creative-tim.com?ref=nukr-default-footer"
+                  href="https://github.com/joao-vieira/gerenciadocker"
                   target="_blank"
                 >
-                  Creative Tim
-                </a>
-              </li>
-              <li>
-                <a
-                  href="http://presentation.creative-tim.com?ref=nukr-default-footer"
-                  target="_blank"
-                >
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="http://blog.creative-tim.com?ref=nukr-default-footer"
-                  target="_blank"
-                >
-                  Blog
+                  REPOSITÓRIO DO PROJETO
                 </a>
               </li>
             </ul>
@@ -53,6 +37,13 @@ function DefaultFooter() {
               target="_blank"
             >
               Creative Tim
+            </a>
+            {" "}and{" "}
+            <a
+              href="https://github.com/joao-vieira/gerenciadocker"
+              target="_blank"
+            >
+              Gerenciadocker
             </a>
             .
           </div>
