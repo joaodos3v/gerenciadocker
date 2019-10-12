@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from './LandingPage';
+import Demonstration from './Demonstration';
 
 // styles for this kit
 import "./assets/css/bootstrap.min.css";
@@ -20,9 +21,10 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route
-        path="/"
+        path="/" exact={true}
         render={props => <LandingPage {...props} />}
       />
+      <Route path="/demonstration" component={Demonstration} />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

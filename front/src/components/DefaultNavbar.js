@@ -53,7 +53,7 @@ function DefaultNavbar() {
         <Container>
           <div className="navbar-translate">
             <NavbarBrand
-              to="/index" 
+              to="/" 
               tag={Link}
               id="gerenciadocker-logo"
             >

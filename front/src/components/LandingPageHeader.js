@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 // reactstrap components
 import { Button, Container } from "reactstrap";
@@ -35,15 +36,11 @@ function LandingPageHeader() {
           <Container>
             <h1 className="title">Gerencie <i>containers</i> facilmente.</h1>
             <div className="text-center">
-              <Button
-                className="btn-round"
-                color="info"
-                href="#pablo"
-                size="lg"
-                onClick={e => e.preventDefault()}
-              >
-                <i className="fab fa-docker"></i> INICIAR
-              </Button>
+              <Link to="/demonstration">
+                <Button className="btn-round" color="info" size="lg">
+                  <i className="fab fa-docker"></i> INICIAR
+                </Button>
+              </Link>
             </div>
           </Container>
         </div>
