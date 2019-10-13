@@ -1,0 +1,19 @@
+
+maquinas = []
+Vetor maquinas possui o ip de cada máquina na rede, será enviado ao algoritmo já preenchido.
+maquinas[0] = ip do back-end do gerenciador
+maquinas[1] = ip da maquina que irá iniciar a verificação
+maquinas[2..n] ip da maquina com o algoritmo
+
+Ao receber uma informação sempre retorna um "OK"
+
+1. start
+    Começa a executar o algoritmo
+2. check
+    Retorna resposta à máquina requerente
+3. keepTest
+    A máquina seguirá realizando o teste
+4. keepInfo
+    Recebe as informações dos testes da primeira rodada
+5. info
+    Retorna as informações do estado das maquinas (ai o back-end chama isso pra pegar a informação)
