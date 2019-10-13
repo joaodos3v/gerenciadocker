@@ -210,6 +210,14 @@ function LandingPage() {
                     <Button
                       className="btn-icon btn-round"
                       color="info"
+                      href="https://twitter.com/vinauun"
+                      target="_blank"
+                    >
+                      <i className="fab fa-twitter"></i>
+                    </Button>
+                    <Button
+                      className="btn-icon btn-round"
+                      color="info"
                       href="https://www.instagram.com/viniciusandd/"
                       target="_blank"
                     >
