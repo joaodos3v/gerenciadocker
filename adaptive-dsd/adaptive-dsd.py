@@ -21,17 +21,16 @@ def ReceberRequisicao(conexao):
     dado = ""
     print("Aguardando mensagem...")
     msg = ReceberResposta(conexao)
-    print("Msg: %s" % (msg))
 
     if msg == "start":
         IniciarTeste(conexao)
-    else if msg == "check":
+    elif msg == "check":
         RealizarVerificacao(conexao)
-    else if msg == "keepTest":
+    elif msg == "keepTest":
         ContinuarTeste(conexao)
-    else if msg == "keepInfo":
+    elif msg == "keepInfo":
         ManterInformacao(conexao)
-    else if msg == "info":
+    elif msg == "info":
         RetornaInformacao(conexao, False)
 
 
@@ -42,14 +41,19 @@ def IniciarTeste(conexao):
 
     EnviarResposta(conexao, "OK")
     json_maquinas = ReceberResposta(conexao)
-    maquinas = json.load(json_maquinas)
+    print("json_maquinas: " + json_maquinas)
+    maquinas = json.loads(json_maquinas)
 
     tested_up = ["-1"] * len(maquinas)
     state = ["FALHO"] * len(maquinas)
     
     state[1] = "NORMAL"
 
-    index = 2
+    print("maquinas: " + str(maquinas))
+    print("tested_up: " + str(tested_up))
+    print("state: " + str(state))
+
+    index = 1
     TestarMaquina(index)
 
 
@@ -59,6 +63,7 @@ def TestarMaquina(index):
     global state
     while index < len(maquinas):
         host, porta = maquinas[index].split(":")
+        print("host: " + host + ", porta: " + porta)
         maquina = CriarConexao(host, porta)
 
         EnviarResposta(maquina, "check")
@@ -98,18 +103,18 @@ def ContinuarTeste(conexao):
     EnviarResposta(conexao, "OK")
 
     json_maquinas = ReceberResposta(conexao)
-    maquinas = json.load(json_maquinas)
+    maquinas = json.loads(json_maquinas)
     EnviarResposta(conexao, "OK")
 
     json_tested = ReceberResposta(conexao)
-    tested_up = json.load(json_tested)
+    tested_up = json.loads(json_tested)
     EnviarResposta(conexao, "OK")
 
     json_state = ReceberResposta(conexao)
-    state = json.load(json_state)
+    state = json.loads(json_state)
     EnviarResposta(conexao, "OK")
 
-    index = 1
+    index = 0
     while index < len(tested_up):
         if tested_up[index] == "-1":
             break
@@ -124,7 +129,7 @@ def ContinuarTeste(conexao):
 def DistribuirInformacao():
     global maquinas
 
-    index = 1
+    index = 0
     while index < len(tested_up):
         if state[index] == "NORMAL":
             break
@@ -142,14 +147,14 @@ def ManterInformacao(conexao):
     global state
 
     json_tested = ReceberResposta(conexao)
-    tested_up = json.load(json_tested)
+    tested_up = json.loads(json_tested)
     EnviarResposta(conexao, "OK")
 
     json_state = ReceberResposta(conexao)
-    state = json.load(json_state)
+    state = json.loads(json_state)
     EnviarResposta(conexao, "OK")
 
-    index = 1
+    index = 0
     while index < len(maquinas):
         if maquinas[index] == CapturarIPHost():
             break
@@ -182,7 +187,7 @@ def RetornaInformacao(conexao, verificacao):
 
 def CriarConexao(host, porta):
     conexao = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conexao.connect((host, porta))
+    conexao.connect((host, int(porta)))
     return conexao
 
 
@@ -197,6 +202,7 @@ def ReceberResposta(conexao):
     except:
         print("Erro ao receber resposta!")
         msg = "ERROR"
+    print("msg: " + msg)
     return msg
 
 
@@ -214,13 +220,11 @@ def EnviarInformacao(conexao, informacao):
 def IniciarExecucao():
     print("===> Iniciando script do <servidor> <===")
 
-    while True:
-        tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    host = CapturarIPHost()
+    porta = int(input("Informe a porta (0 para sair): "))
 
-        host = CapturarIPHost()
-        porta = int(input("Informe a porta (0 para sair): "))
-        if porta == 0:
-            break
+    while porta > 0:
+        tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tupla = (host, porta)
         tcp.bind(tupla)
         tcp.listen(1)
