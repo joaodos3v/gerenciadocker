@@ -1,0 +1,29 @@
+% DESCRIÇÃO DA IMPLEMENTAÇÃO-------------------------------------------------------------------
+
+\chapter{DESCRIÇÃO DA IMPLEMENTAÇÃO}
+\label{chap:descricao_da_implementacao}
+
+% ADAPTIVE DSD-------------------------------------------------------------------
+\section{Adaptive DSD}
+\label{sec:adaptiveDSD}
+
+O Adaptive DSD (\textit{Adaptive Distributed System-Level Diagnosis}) é um algoritmo para diagnóstico em redes completamente conectadas. Onde seu funcionamento é ao mesmo tempo 
+adaptativo e distribuído. Foi desenvolvido para que cada máquina que possua o algoritmo em execução possa realizar o teste e também ser testada por outras máquinas na rede.
+É caracterizado como adaptativo por não depender e nem restrigir o número de máquinas na rede, necessitando, no mínimo uma máquina para o teste. Para a execução dos testes, não é levado
+em consideração falhas na rede, pois o objetivo deste algoritmo é, testar o processamento ou funcionamento específico de um processo na máquina.
+
+\subsection{Funcionamento}
+\label{sub:adaptiveDSD_Funcionamento}
+O algoritmo possui duas listas, que possuem de tamanho o número de máquina conectadas à rede, as listas são: o vetor TESTED\_UP, que irá guardar na posição da máquina atual, qual 
+o índice da máquina testada que possui funcionamento normal; o vetor STATE, que armazena o estado das máquinas, tendo inicialmente o valor FALHO para todas e, caso uma máquina tenha seu 
+funcionamento confirmado, esta receberá o valor NORMAL no vetor. A cada rodada o os vetores são atualizados e enviados às outros máquinas na rede.
+
+Na primeira rodada, uma máquina irá iniciar o teste seguindo a lista de máquina existentes e disponíveis na rede. Esta máquina irá percorrer a
+lista de máquinas fará uma requisição de teste à próxima máquina da lista. Caso a máquina a ser testada retornar uma resposta de funcionamento correto, a máquina que está realizando o 
+teste recebe os dados e envia à máquina testada, que por sua vez irá executar o mesmo processo com a máquina seguinte, até que todas as máquinas tenham sido testadas. Por outro lado, se 
+a máquina testada, retornar algum erro, será marcada como falha, e a máquina que está testando irá testar a próxima máquina da lista, até encontrar outro máquina com funcionamento normal 
+ou até que a lista de máquinas disponíveis acabe.
+
+A segunda rodada será para atualizar as informações de todas as máquinas na rede sobre o estado de funcionamento de cada máquina. Inicialmente a primeira máquina com funcionamento normal 
+irá verificar na lista de máquinas, qual a próxima máquina funcionando, e irá enviar os dados da rede. Ao receber os dados da rede, a máquina receptora irá prosseguir com a distrbuição 
+de informações.
