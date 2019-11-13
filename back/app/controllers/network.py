@@ -45,3 +45,7 @@ def network_criar():
         "status": 0,
         "mensagem": "Falha ao criar a network"
     })
+
+@app.route("/network/remover", methods=['POST'])
+def network_remover():
+    pass
