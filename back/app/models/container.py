@@ -1,21 +1,13 @@
-import subprocess
+from app.models.model import Model
 
-class Container:
-
+class Container(Model):
     id = ''
-    distro = ''
-    versao = ''
-
-    def executar_comando(self, comando):
-        retorno = None
-        try:
-            retorno = subprocess.check_output(comando, shell=True).decode('utf-8').strip()
-        except:
-            pass
-        return retorno
+    distro  = ''
+    versao  = ''
+    network = ''
 
     def iniciar(self):
-        comando = 'docker run -dit %s:%s' % (self.distro, self.versao)
+        comando = 'docker run -dit --network %s %s:%s' % (self.network, self.distro, self.versao)
         return self.executar_comando(comando)
 
     def parar(self):
