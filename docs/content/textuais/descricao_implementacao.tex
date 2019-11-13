@@ -7,23 +7,251 @@
 \section{Adaptive DSD}
 \label{sec:adaptiveDSD}
 
-O Adaptive DSD (\textit{Adaptive Distributed System-Level Diagnosis}) é um algoritmo para diagnóstico em redes completamente conectadas. Onde seu funcionamento é ao mesmo tempo 
+O \adaptive (\textit{Adaptive Distributed System-Level Diagnosis}) é um algoritmo para diagnóstico em redes completamente conectadas. Onde seu funcionamento é, ao mesmo tempo 
 adaptativo e distribuído. Foi desenvolvido para que cada máquina que possua o algoritmo em execução possa realizar o teste e também ser testada por outras máquinas na rede.
 É caracterizado como adaptativo por não depender e nem restrigir o número de máquinas na rede, necessitando, no mínimo uma máquina para o teste. Para a execução dos testes, não é levado
 em consideração falhas na rede, pois o objetivo deste algoritmo é, testar o processamento ou funcionamento específico de um processo na máquina.
 
 \subsection{Funcionamento}
 \label{sub:adaptiveDSD_Funcionamento}
-O algoritmo possui duas listas, que possuem de tamanho o número de máquina conectadas à rede, as listas são: o vetor TESTED\_UP, que irá guardar na posição da máquina atual, qual 
+O algoritmo possui duas listas, que possuem de tamanho o número de máquinas conectadas à rede, as listas são: o vetor TESTED\_UP, que irá guardar na posição da máquina atual, 
 o índice da máquina testada que possui funcionamento normal; o vetor STATE, que armazena o estado das máquinas, tendo inicialmente o valor FALHO para todas e, caso uma máquina tenha seu 
-funcionamento confirmado, esta receberá o valor NORMAL no vetor. A cada rodada o os vetores são atualizados e enviados às outros máquinas na rede.
+funcionamento correto confirmado, esta receberá o valor NORMAL no vetor. A cada rodada os vetores são atualizados e enviados às outras máquinas na rede.
 
 Na primeira rodada, uma máquina irá iniciar o teste seguindo a lista de máquina existentes e disponíveis na rede. Esta máquina irá percorrer a
-lista de máquinas fará uma requisição de teste à próxima máquina da lista. Caso a máquina a ser testada retornar uma resposta de funcionamento correto, a máquina que está realizando o 
-teste recebe os dados e envia à máquina testada, que por sua vez irá executar o mesmo processo com a máquina seguinte, até que todas as máquinas tenham sido testadas. Por outro lado, se 
-a máquina testada, retornar algum erro, será marcada como falha, e a máquina que está testando irá testar a próxima máquina da lista, até encontrar outro máquina com funcionamento normal 
+lista de máquinas e fará uma requisição de teste à próxima máquina da lista. No caso da máquina à ser testada retornar uma resposta de funcionamento correto, a máquina que está realizando o 
+teste atualiza os dados e envia à máquina testada, que por sua vez irá executar o mesmo processo com a máquina seguinte, até que todas as máquinas tenham sido testadas. Por outro lado, se 
+a máquina testada retornar algum erro, será marcada como falha, e a máquina que está testando irá testar a próxima máquina da lista, até encontrar outro máquina com funcionamento normal 
 ou até que a lista de máquinas disponíveis acabe.
 
 A segunda rodada será para atualizar as informações de todas as máquinas na rede sobre o estado de funcionamento de cada máquina. Inicialmente a primeira máquina com funcionamento normal 
-irá verificar na lista de máquinas, qual a próxima máquina funcionando, e irá enviar os dados da rede. Ao receber os dados da rede, a máquina receptora irá prosseguir com a distrbuição 
+irá verificar na lista de máquinas, qual a próxima máquina funcionando e irá enviar os dados da rede. Ao receber os dados da rede, a máquina receptora irá prosseguir com a distrbuição 
 de informações.
+
+\subsection{Algoritmo}
+\label{sub:adaptiveDSD_Algoritmo}
+O algoritmo \adaptive inicia sua execução criando uma conexão em uma porta por um \textit{socket} e fica escutando esta porta, até que uma conexão seja estabelecida por outra máquina.
+Ao final de toda requisição realizada por outro máquina, o algoritmo volta a escutar e aguardar uma nova conexão por \textit{socket} com a porta.
+
+\vspace*{1cm}
+\begin{python}
+    tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tupla = (ip_host, int(porta_host))
+    tcp.bind(tupla)
+    tcp.listen(1)
+
+    conexao, cliente = tcp.accept() 
+    ReceberRequisicao(conexao)
+\end{python}
+\vspace*{1cm}
+
+O método \textbf{ReceberRequisicao} direciona para o fluxo requisitado pela máquina que está conectando com a máquina atual. As seguintes mensagens podem ser enviadas para realizar determinadas ações:
+
+\vspace*{1cm}
+\begin{enumerate}
+    \item \textbf{'start'}: mensagem enviada pelo gerenciador para realizar uma verificação das máquinas. A máquina será considerada a primeira da lista (posição 0) e terá o estado NORMAL. Ao receber esta mensagem,
+    irá executar o método IniciarTeste.
+    \item \textbf{'check'}: mensagem enviada pela máquina que está realizando o teste no momento. Ao receber esta mensagem a máquina atual irá realizar uma verificação de funcionamento e, 
+    irá retornar se possui falha ou não.
+    \item \textbf{'keepTest'}: mensagem enviada pela máquina que está realizando o teste caso a máquina atual esteja com funcionamento NORMAL. Informa a máquina atual para dar continuidade ao teste de funcionamento.
+    \item \textbf{'keepInfo'}: mensagem enviada por uma máquina na lista de máquinas com status NORMAL. Informa a máquina atual para manter as informações do teste realizado e prosseguir com a distribução da informação.
+    \item \textbf{'info'}: mensagem enviada pelo gerenciador para receber as informações do ultimo teste. A máquina atual irá retornar ao gerenciador o status de cada máquina da rede.
+  \end{enumerate}
+
+\vspace*{1cm}
+\begin{python}
+def ReceberRequisicao(conexao):
+    print("Aguardando mensagem...")
+    msg = ReceberResposta(conexao)
+
+    if msg == "start":
+        IniciarTeste(conexao)
+    elif msg == "check":
+        RealizarVerificacao(conexao)
+    elif msg == "keepTest":
+        ContinuarTeste(conexao)
+    elif msg == "keepInfo":
+        ManterInformacao(conexao)
+    elif msg == "info":
+        RetornaInformacao(conexao, False)
+\end{python}
+\vspace*{1cm}
+
+O método \textbf{IniciarTeste} inicia recebendo do gerenciador uma lista das máquinas, contendo o IP e porta, para conexão. Cria as listas TESTE\_UP e STATE e inicia o teste.
+
+\vspace*{1cm}
+\begin{python}
+def IniciarTeste(conexao):
+    global maquinas
+    global tested_up
+    global state
+
+    EnviarResposta(conexao, "OK")
+    json_maquinas = ReceberResposta(conexao)
+    maquinas = json.loads(json_maquinas)
+
+    tested_up = ["-1"] * len(maquinas)
+    state = ["FALHO"] * len(maquinas)
+
+    print("maquinas: " + str(maquinas))
+    print("tested_up: " + str(tested_up))
+    print("state: " + str(state))
+
+    index = maquinas.index(ip_host+":"+str(porta_host))
+    state[index] = "NORMAL"
+    if index == len(maquinas)-1:
+        index = 0
+    TestarMaquina(index)
+\end{python}
+\vspace*{1cm}
+
+O método \textbf{TestarMaquina} percorre a lista de máquinas, executa o método \textbf{CriarConexao} para criar a conexão com a máquina a ser testada e envia a mensagem 'check'. Caso 
+a máquina testada retornar a confirmação de funcionamento, a máquina atual procede em enviar as informações existentes à máquina testada, primeiramente enviando a mensagem 'keepTest' para informar a outra máquina 
+a dar continuidade no teste. Caso a máquina testada retornar erro, esta será marcada com um 'X' no vetor TESTED\_UP e como 'FALHO' no vetor STATE.
+Ao chegar na última máquina da lista, o método \textbf{DistribuirInformacao} é executado.
+
+\vspace*{1cm}
+\begin{python}
+def TestarMaquina(index):
+    global maquinas
+    global tested_up
+    global state
+    global ip_host
+    global porta_host
+
+    index_maquina = maquinas.index(ip_host+":"+str(porta_host))
+    while index < len(maquinas):
+        if index_maquina != index and tested_up[index] != "X":
+            host, porta = maquinas[index].split(":")
+            time.sleep(0.5)
+            maquina = CriarConexao(host, porta)
+
+            msg = EnviarInformacao(maquina, "check")
+            if msg == "OK":
+                time.sleep(0.5)
+                maquina = CriarConexao(host, porta)
+                EnviarInformacao(maquina, "keepTest")
+
+                tested_up[index_maquina] = str(index)
+                state[index] = "NORMAL"
+
+                json_maquinas = json.dumps(maquinas)
+                json_tested = json.dumps(tested_up)
+                json_state = json.dumps(state)
+                
+                EnviarInformacao(maquina, json_maquinas)
+                EnviarInformacao(maquina, json_tested)
+                EnviarInformacao(maquina, json_state)
+
+                maquina.close()
+                break
+            else:
+                print("maquina com falha: " + str(index))
+                tested_up[index] = "X"
+                state[index] = "FALHO"
+                index = index + 1
+        else:
+            index = index + 1
+
+    if index == len(maquinas):
+        print("Iniciar segundo ciclo...")
+        DistribuirInformacao()
+\end{python}
+\vspace*{1cm}
+
+O método \textbf{ContinuarTeste} recebe as informações coletadas até o momento no teste, enviando uma confirmação a cada envio. Após isto, uma verificação é realizada para direcionar 
+o teste para próxima máquina da lista, ou para iniciar a distrbuição das informações, caso não haja mais máquinas não testadas na rede.
+
+\vspace*{1cm}
+\begin{python}
+def ContinuarTeste(conexao):
+    global maquinas
+    global tested_up
+    global state
+
+    EnviarResposta(conexao, "OK")
+
+    json_maquinas = ReceberResposta(conexao)
+    maquinas = json.loads(json_maquinas)
+    EnviarResposta(conexao, "OK")
+
+    json_tested = ReceberResposta(conexao)
+    tested_up = json.loads(json_tested)
+    EnviarResposta(conexao, "OK")
+
+    json_state = ReceberResposta(conexao)
+    state = json.loads(json_state)
+    EnviarResposta(conexao, "OK")
+
+    index = 0
+    segundo_ciclo = True
+    while index < len(tested_up):
+        if tested_up[index] == "-1":
+            segundo_ciclo = False
+            break
+        index = index + 1
+
+    if segundo_ciclo:
+        print("Iniciar segundo ciclo...")
+        DistribuirInformacao()
+    else:
+        index_maquina = maquinas.index(ip_host+":"+str(porta_host))
+        if index_maquina == len(maquinas)-1:
+            index_maquina = 0
+        TestarMaquina(index_maquina)
+\end{python}
+\vspace*{1cm}
+
+O método \textbf{ManterInformacao} recebe as informações do teste finalizado, enviando uma confirmação a cada envio. Por fim, a máquina envia estas informações à próxima máquina com status 
+'NORMAL'.
+
+\vspace*{1cm}
+\begin{python}
+def ManterInformacao(conexao):
+    global tested_up
+    global state
+    global porta_host
+    global ip_host
+    EnviarResposta(conexao, "OK")
+
+    json_tested = ReceberResposta(conexao)
+    tested_up = json.loads(json_tested)
+    EnviarResposta(conexao, "OK")
+
+    json_state = ReceberResposta(conexao)
+    state = json.loads(json_state)
+    EnviarResposta(conexao, "OK")
+
+    index_host = maquinas.index(ip_host+":"+str(porta_host))
+    indexMaquina = int(tested_up[index_host])
+    if index_host < len(maquinas)-1 and indexMaquina > index_host:
+        time.sleep(0.5)
+        host, porta = maquinas[int(indexMaquina)].split(":")
+        maquina = CriarConexao(host, porta)
+
+        EnviarInformacao(maquina, "keepInfo")
+        RetornaInformacao(maquina, True)
+        maquina.close()
+\end{python}
+\vspace*{1cm}
+
+O método \textbf{RetornaInformacao} retorna as informações do teste. Caso o parâmetro \textbf{verificacao} seja verdadeiro, ao enviar uma informação, a máquina irá esperar por uma resposta 
+de confirmação, se não, irá apenas enviar as informações, sem esperar por uma resposta de confirmação.
+
+\vspace*{1cm}
+\begin{python}
+def RetornaInformacao(conexao, verificacao):
+    global tested_up
+    global state
+
+    json_tested = json.dumps(tested_up)
+    json_state = json.dumps(state)
+
+    if verificacao:
+        EnviarInformacao(conexao, json_tested)
+        EnviarInformacao(conexao, json_state)
+    else:
+        EnviarResposta(conexao, json_tested)
+        EnviarResposta(conexao, json_state)
+    conexao.close()
+\end{python}
