@@ -79,6 +79,40 @@ def container_parar():
         "mensagem": mensagem
     })
 
+@app.route("/container/remover", methods=['POST'])
+def container_remover():
+    container_id = None
+
+    json = request.get_json()
+
+    if not json:
+        return jsonify({
+            "status": 0,
+            "mensagem": "Não foi possível parar o container"
+        })
+    
+    try:
+        container_id = json['container_id']
+    except:
+        return jsonify({
+            "status": 0,
+            "mensagem": 'O json deve possuir o campo "container_id"'
+        })
+
+    container = Container()
+    container.id = container_id
+    container_parado = container.parar()
+    
+    if container_parado == 1:
+        mensagem = "Container parado"
+    else:
+        mensagem = "Não foi possível parar o container"
+    
+    return jsonify({
+        "status": container_parado,
+        "mensagem": mensagem
+    })
+
 @app.route("/container/consultar/<container_id>", methods=['GET'])
 def container_consultar(container_id):            
     container = Container()
