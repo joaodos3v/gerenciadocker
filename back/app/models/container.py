@@ -18,6 +18,13 @@ class Container(Model):
         if container_id:
             return 1
         return 0
+    
+    def retomar(self):
+        comando = 'docker start %s' % self.id
+        container_id = self.executar_comando(comando)
+        if container_id:
+            return 1
+        return 0        
 
     def remover(self):
         comando = 'docker rm %s -f' % self.id
