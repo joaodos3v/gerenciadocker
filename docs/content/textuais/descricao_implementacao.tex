@@ -265,8 +265,42 @@ def RetornaInformacao(conexao, verificacao):
 
 
 
+% API-------------------------------------------------------------------
+\section{\textit{API}}
+\label{sec:api}
 
 
+
+
+
+
+
+
+
+% Frontend-------------------------------------------------------------------
+\section{\textit{Frontend}}
+\label{sec:frontend}
+
+Desde o princípio do projeto, os integrantes do grupo optaram por modulizar a solução, encarregando cada parte com sua respectiva função, tal como: o \adaptive{} (subcapítulo \ref{sec:adaptiveDSD}) seria responsável apenas por detectar falhas na rede; a \textit{API} (subcapítulo \ref{sec:api}) faria a comunição entre os módulos; o \textit{frontend} (subcapítulo atual) seria responsável por apresentar ao usuário uma tela simples e intuitiva e a \textit{PWA} (subcapítulo \ref{sec:pwa}) é um complemento ao projeto, que servirá para dar mais mobilidade ao utilizador da plataforma.
+
+Esta decisão possibilitou que o \textit{frontend} fosse criado com foco total em proporcionar a melhor experiência possível para o usuário, consumindo e exibindo todas informações disponibilizadas pela \textit{API}. Tendo em vista que o \adaptive{}será executado em intervalos de tempo, as páginas precisariam repassar esse dinamismo ao usuário e, buscando obter caraterística, toda a parte visual do projeto foi construída utilizando \textit{React} - uma biblioteca JavaScript focada na criação de interfaces de usuário, desenvolvida pelo Facebook.
+
+
+\subsection{O Sistema}
+\label{sec:o_sistema}
+
+Essa biblioteca realmente atendeu às expectativas e permitiu que as duas principais telas do sistema fossem criadas realmente conforme o pretendido. A primeira, que pode ser visualizada na figura \ref{fig:landing_page}, serve simplesmente como uma tela de boas-vindas ao usuário, na qual ele poderá ler um breve resumo do que é a plataforma, entender em quais pontos ela pode ser útil e ver quem são as membros da equipe que criou o projeto.
+
+\begin{figure}[H]
+    \centering
+    \caption{\textit{Landing Page}}
+    \frame{\includegraphics[width=1.0\textwidth]{./content/textuais/imagens/landing-page.png}}
+    \label{fig:landing_page}
+\end{figure}
+
+Já a segunda, que é a tela de demonstração, é o local mais importante do sistema e pode ser acessado através do botão \aspas{Iniciar} exibido na figura \ref{fig:landing_page}. É nesse ambiente que o usuário criará sua \dockerNetwork{} e visualizará o estado atual de cada um dos \containers{} que a compõe. Além disso, também é possível interagir com cada \conteiner{} individualmente e utilizar opções como \aspas{Pausar}, \aspas{Retomar} ou \aspas{Excluir}, tal como pode ser visualizado na figura 3.
+
+{\huge TELA DE DEMONSTRAÇÃO AQUI}
 
 
 
@@ -290,7 +324,7 @@ Para resumir, sempre que deseja-se criar uma experiência agradável para o usu�
 
 
 \subsection{O Aplicativo}
-\label{sec:aplicativo_de_alertas_pwa}
+\label{subsec:o_aplicativo}
 
 Para tornar a solução ainda mais completa e próxima das necessidades do usuário, o grupo decidiu fazer um \textit{app} simples (utilizando a tecnologia citada no subcapítulo \ref{sec:pwa}) que irá listar todas as ocorrências de falhas nos \containers{}, além de disparar uma \textit{push notification} na tela do usuário. O objetivo principal deste aplicativo é servir como uma fonte de consulta para o usuário responsável pelo funcionamento da rede de \containers{}.
 
