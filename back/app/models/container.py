@@ -21,7 +21,9 @@ class Container(Model):
     def remover(self):
         comando = 'docker rm %s -f'
         container_id = self.executar_comando(comando)
-        return container_id
+        if container_id:
+            return 1
+        return 0
 
     def consultar(self):
         comando = "docker stats --no-stream --format 'table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}' %s | grep %s | awk '{ print $1, $2, $3 }'" % (self.id, self.id)

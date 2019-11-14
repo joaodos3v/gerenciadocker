@@ -90,7 +90,7 @@ def container_remover():
     if not json:
         return jsonify({
             "status": 0,
-            "mensagem": "Não foi possível parar o container"
+            "mensagem": "Não foi possível remover o container"
         })
     
     try:
@@ -103,15 +103,15 @@ def container_remover():
 
     container = Container()
     container.id = container_id
-    container_parado = container.parar()
+    container_removido = container.remover()
     
-    if container_parado == 1:
-        mensagem = "Container parado"
+    if container_removido == 1:
+        mensagem = "Container removido"
     else:
-        mensagem = "Não foi possível parar o container"
+        mensagem = "Não foi possível remover o container"
     
     return jsonify({
-        "status": container_parado,
+        "status": container_removido,
         "mensagem": mensagem
     })
 
