@@ -10,8 +10,10 @@ def index():
 
 @app.route("/container/iniciar", methods=['POST'])
 def container_iniciar():
-    distro = None
-    versao = None
+    nome    = None
+    distro  = None
+    versao  = None
+    network = None
     
     json = request.get_json()
 
@@ -22,17 +24,21 @@ def container_iniciar():
         })
 
     try:
-        distro = json['distro']
-        versao = json['versao']
+        nome    = json['nome']
+        distro  = json['distro']
+        versao  = json['versao']
+        network = json['network']
     except:
         return jsonify({
             "status": 0,
-            "mensagem": 'O json deve possuir os campos "distro" e "versão"'
+            "mensagem": 'O json deve possuir os campos "distro", "versão" e "network"'
         })   
 
     container = Container()
-    container.distro = distro
-    container.versao = versao
+    container.nome    = nome
+    container.distro  = distro
+    container.versao  = versao
+    container.network = network
     container_id = container.iniciar()
 
     if container_id:

@@ -2,12 +2,13 @@ from app.models.model import Model
 
 class Container(Model):
     id      = ''
+    nome    = ''
     distro  = ''
     versao  = ''
     network = ''
 
     def iniciar(self):
-        comando = 'docker run -dit --network %s %s:%s' % (self.network, self.distro, self.versao)
+        comando = 'docker run -dit --name %s --network %s %s:%s' % (self.nome, self.network, self.distro, self.versao)
         container_id = self.executar_comando(comando)
         return container_id
 
@@ -19,7 +20,7 @@ class Container(Model):
         return 0
 
     def remover(self):
-        comando = 'docker rm %s -f'
+        comando = 'docker rm %s -f' % self.id
         container_id = self.executar_comando(comando)
         if container_id:
             return 1
