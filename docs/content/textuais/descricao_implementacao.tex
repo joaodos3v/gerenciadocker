@@ -4,7 +4,7 @@
 \label{chap:descricao_da_implementacao}
 
 % ADAPTIVE DSD-------------------------------------------------------------------
-\section{Adaptive DSD}
+\section{\adaptive{}}
 \label{sec:adaptiveDSD}
 
 O \adaptive (\textit{Adaptive Distributed System-Level Diagnosis}) é um algoritmo para diagnóstico em redes completamente conectadas. Onde seu funcionamento é, ao mesmo tempo 
@@ -255,3 +255,47 @@ def RetornaInformacao(conexao, verificacao):
         EnviarResposta(conexao, json_state)
     conexao.close()
 \end{python}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% PWA-------------------------------------------------------------------
+\section{PWA}
+\label{sec:pwa}
+
+Os \textit{Progressive Web Apps}, que recentemente vem ganhando bastante popularidade e adeptos, podem ser definidos como \cite{Souza19} \aspas{uma aplicação \web{} com tecnologias que permitem termos a experiência de uso muito próxima da oferecida pelos \textit{mobile apps}}. Isso quer dizer, basicamente, que ao acessar um \textit{site}, o usuário terá a opção de adicionar um \aspas{atalho} para este no seu celular.
+
+Porém, ao abrir esse atalho, a experiência para o utilizador será de estar utilizando um aplicativo nativo, como se tivesse \aspas{instalado o \textit{site}} em seu dispositivo. Isso porque ele não verá uma barra exibindo a \textit{URL} que está sendo acessada e, além disso, funções nativas do celular - como acesso à câmera, geolocalização, aos contatos e \textit{push notifications} - estarão em pleno funcionamento. Esse tipo de solução tem sido testada e utilizada por grandes empresas como Uber, Twitter e Facebook, por exemplo, em virtude de algumas vantagens que ela apresenta sobre os \textit{apps} nativos, principalmente em dois pontos: custos e engajamento do cliente.
+
+
+Primeiramente, no quesito despesas, utilizar um \textit{PWA} permite que, com poucas alterações no site da empresa, ela disponibilize um \aspas{aplicativo} - o que economiza tempo de desenvolvimento e, consequentemente, dinheiro. Em segundo lugar, geralmente os \textit{PWAs} são mais rápidos, ocupam menos espaço de armazenamento no dispositivo e, em casos reais, ficou comprovado que a facilidade em obter esse \textit{app} gera mais conversão de clientes, conforme \cite{Souza19} \aspas{o Flipkart que é o maior e-commerce da Índia, eles decidiram fazer uma experiência mobile através de uma PWA e aumentaram a sua conversão em 70\%}.
+
+Para resumir, sempre que deseja-se criar uma experiência agradável para o usuário, de forma rápida e com poucos custos, não sendo necessário implementar funcionalidades demasiadamente robustas, um \textit{PWA} é a melhor opção. No caso desse projeto, portanto, que se enquadra perfeitamente nessas características, o grupo considerou essa como sendo a tecnologia ideal para criarmos um aplicativo para este projeto.
+
+
+\subsection{O Aplicativo}
+\label{sec:aplicativo_de_alertas_pwa}
+
+Para tornar a solução ainda mais completa e próxima das necessidades do usuário, o grupo decidiu fazer um \textit{app} simples (utilizando a tecnologia citada no subcapítulo \ref{sec:pwa}) que irá listar todas as ocorrências de falhas nos \containers{}, além de disparar uma \textit{push notification} na tela do usuário. O objetivo principal deste aplicativo é servir como uma fonte de consulta para o usuário responsável pelo funcionamento da rede de \containers{}.
+
+Isso porque, em virtude de relacionar-se com diversas variáveis (velocidade da rede, infraestrutura, tamanho das equipes, entre outras), é possível que esse tipo de rede apresente pequenas falhas com o decorrer do tempo. Como é de conhecimento de todos, o profissional moderno precisa, além de realizar várias tarefas em paralelo, contar com uma certa mobilidade e, portanto, não seria agradável que um colaborador precisasse monitorar a tela do sistema em tempo integral para identificar quando ocorresse um problema.
+
+Em razão disso, era necessário chamar a atenção dos responsáveis por manter a rede funcionando de alguma forma. Analisando as tecnologias disponíveis nos dias de hoje, chegou-se ao consenso que uma notificação no celular é, provavelmente, um dos melhores meios de chamar a atenção de alguém. Na imagem abaixo, é possível visualizar a interface da versão final do aplicativo:
+
+{\huge IMAGEM DA PWA AQUI}
