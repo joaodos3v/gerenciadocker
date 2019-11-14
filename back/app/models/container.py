@@ -1,25 +1,33 @@
-import subprocess
+from app.models.model import Model
 
-class Container:
-
-    id = ''
-    distro = ''
-    versao = ''
-
-    def executar_comando(self, comando):
-        retorno = None
-        try:
-            retorno = subprocess.check_output(comando, shell=True).decode('utf-8').strip()
-        except:
-            pass
-        return retorno
+class Container(Model):
+    id      = ''
+    nome    = ''
+    distro  = ''
+    versao  = ''
+    network = ''
 
     def iniciar(self):
-        comando = 'docker run -dit %s:%s' % (self.distro, self.versao)
-        return self.executar_comando(comando)
+        comando = 'docker run -dit --name %s --network %s %s:%s' % (self.nome, self.network, self.distro, self.versao)
+        container_id = self.executar_comando(comando)
+        return container_id
 
     def parar(self):
         comando = 'docker stop %s' % self.id
+        container_id = self.executar_comando(comando)
+        if container_id:
+            return 1
+        return 0
+    
+    def retomar(self):
+        comando = 'docker start %s' % self.id
+        container_id = self.executar_comando(comando)
+        if container_id:
+            return 1
+        return 0        
+
+    def remover(self):
+        comando = 'docker rm %s -f' % self.id
         container_id = self.executar_comando(comando)
         if container_id:
             return 1
