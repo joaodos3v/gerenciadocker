@@ -1,6 +1,8 @@
 from flask import jsonify, request
+import json
 from app import app
 from app.models.container import Container
+from app.models.network import Network
 
 @app.route("/")
 def index():
@@ -114,14 +116,43 @@ def container_remover():
     })
 
 @app.route("/container/consultar/<container_id>", methods=['GET'])
-def container_consultar(container_id):            
+def container_consultar(container_id):
     container = Container()
     container.id = container_id
-    informacoes = container.consultar()
-    arr_informacoes = informacoes.split(" ")
+    container_informacoes = container.consultar()
+    list_container_informacoes = container_informacoes.split(" ")
     return jsonify({
         "status": 1,
         "mensagem": "Informações localizadas",
-        "cpu": arr_informacoes[1],
-        "ram": arr_informacoes[2]
+        "cpu": list_container_informacoes[1],
+        "ram": list_container_informacoes[2]
+    })
+
+@app.route("/container/consultar/network/<network_id>", methods=['GET'])
+def container_consultar_network(network_id):
+    network = Network()
+    network.id = network_id    
+    containers = []
+    json_infos_network = network.consultar()
+    json_containers = json_infos_network[0]['Containers']
+    for container_id in json_containers:
+        atributos = json_containers[container_id]        
+        container = Container()
+        container.id = container_id
+        container_informacoes = container.consultar()
+        list_container_informacoes = container_informacoes.split(" ")
+        dict_container_informacoes = {
+            "id": container_id,
+            "nome": atributos['Name'],
+            "ipv4": atributos['IPv4Address'],
+            "macaddress": atributos['MacAddress'],
+            "cpu": list_container_informacoes[1],
+            "ram": list_container_informacoes[2]
+        }
+        containers.append(dict_container_informacoes)
+
+    return jsonify({
+        "status":1,
+        "mensagem": "Informações localizadas",
+        "containers": containers
     })
