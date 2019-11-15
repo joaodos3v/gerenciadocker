@@ -7,7 +7,7 @@ failures = JSON.parse(failures);
 // Registra o serviceWorker para permitir o funcionamento offline
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-    .register('./service-worker.js')
+    .register('service-worker.js')
     .then(reg => console.log("[ServiceWorker] Registered..."))
     .catch(err => console.log("[ServiceWorker] Erro ao registrar:", err));
 }
