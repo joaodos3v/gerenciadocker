@@ -4,6 +4,7 @@
     <base href="/gerenciadocker/pwa/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="Description" content="Um aplicativo PWA para alertar o usuário sobre falhas de contêineres na rede.">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>GerenciaDocker App</title>
 
@@ -11,11 +12,29 @@
     <meta name="theme-color" content="#607d8b">
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
+    <!-- Arquivo de manifesto com as configurações da aplicação -->
     <link rel="manifest" href="manifest.json">
 
+    <!-- Core SDK do Firebase | The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyCjjYhAs0p6voIzUQls-Lk5CiK8TsGPimY",
+            authDomain: "gerenciadocker-app.firebaseapp.com",
+            databaseURL: "https://gerenciadocker-app.firebaseio.com",
+            projectId: "gerenciadocker-app",
+            storageBucket: "gerenciadocker-app.appspot.com",
+            messagingSenderId: "695655950971",
+            appId: "1:695655950971:web:282fd27968cf18cc19d0de"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Scripts JS necessários -->
     <script src="js/jquery-3.4.1.slim.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/scripts.js"></script>
     
     <!-- Tags para dispositivos Apple -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -37,48 +56,13 @@
             </p>
         </div>
         <div class="row">
-            <ul class="list-unstyled col-12">
-                <li class="media">
-                    <img src="img/warning.png" class="mr-3" alt="Ícone de alerta">
-                    <div class="media-body">
-                        <h4 class="mt-0 mb-1">
-                            Container-1 <br>
-                            <small class="text-muted">Em <i>15/11/2019, às 14h41.</i></small>
-                        </h4>
-                        <p class="text-justify">
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </p>
-                        <hr>
-                    </div>
-                </li>
-                <li class="media">
-                    <img src="img/warning.png" class="mr-3" alt="Ícone de alerta">
-                    <div class="media-body">
-                        <h4 class="mt-0 mb-1">
-                            Container-2 <br>
-                            <small class="text-muted">Em <i>15/11/2019, às 14h41.</i></small>
-                        </h4>
-                        <p class="text-justify">
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </p>
-                        <hr>
-                    </div>
-                </li>
-                <li class="media">
-                    <img src="img/warning.png" class="mr-3" alt="Ícone de alerta">
-                    <div class="media-body">
-                        <h4 class="mt-0 mb-1">
-                            Container-3 <br>
-                            <small class="text-muted">Em <i>15/11/2019, às 14h41.</i></small>
-                        </h4>
-                        <p class="text-justify">
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </p>
-                        <hr>
-                    </div>
-                </li>
+            <ul class="list-unstyled col-12" id="failures-list">
+
             </ul>
         </div>
     </div>
+
+    <script src="js/scripts.js"></script>
+    <script src="js/push.js"></script>
 </body>
 </html>
