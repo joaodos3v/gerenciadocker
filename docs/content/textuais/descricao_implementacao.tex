@@ -169,6 +169,53 @@ Primeiramente, no quesito despesas, utilizar um \textit{PWA} permite que, com po
 Para resumir, sempre que deseja-se criar uma experiência agradável para o usuário, de forma rápida e com poucos custos, não sendo necessário implementar funcionalidades demasiadamente robustas, um \textit{PWA} é a melhor opção. No caso desse projeto, portanto, que se enquadra perfeitamente nessas características, o grupo considerou essa como sendo a tecnologia ideal para criarmos um aplicativo para este projeto.
 
 
+\subsection{Desenvolvimento}
+\label{subsec:desenvolvimento}
+
+Após entender quais eram as tecnologias necessárias, realizar pesquisas sobre o assunto e realizar alguns cursos \online{}, pode-se dizer que o desenvolvimento do aplicativo não foi tão complexo - até porque sua funcionalidade é bastante simples. No entanto, como em qualquer outra aplicação, a curva de aprendizado inicial foi o obstáculo mais relevante que teve de ser superado. Após passar por esta etapa, trabalhou-se com foco na parte visual (procurando deixá-la agradável) e nos testes do \textit{app}, pois um dos seus pontos mais atrativos é o envio de notificações e, portanto, era requisito que estivesse funcionando corretamente. 
+
+Ao fim da sua construção, pode-se dizer que esse aplicativo possui três elementos essenciais, sem os quais seu funcionamento seria inviável. Para que seja possível citar alguns detalhes técnicos, as seções a seguir serão destinadas especificamente a cada um deles: Firebase, GitHub e JavaScript.
+
+\subsubsection{Firebase}
+\label{subsubsec:firebase}
+
+A plataforma, desenvolvida pela Google com o objetivo de tornar o desenvolvimento de aplicativos e sistemas mais fácil e rápida, é quem possibilita o envio das \textit{push notifications} pois, na realidade, é ela quem gerencia o envio e recebimento desses avisos. Isso porque, toda vez que o \adaptive{} detectar uma falha, ele enviará uma requisição \textit{POST} para um servidor do Firebase e, somente então, o Firebase irá reconhecer quem deve receber essa mensagem e entregá-la ao destinatário final.
+
+Além desse grande auxílio, a plataforma possui um console completamente focado em escalar exponencialmente qualquer tipo de solução que a utilize, tal como permitir a utilização de um banco de dados de tempo real em poucos \textit{clicks}. Essa grande variadade de ferramentas disponibilizadas pela mesma plataforma é um fato bastante positivo pois, caso o grupo decida incrementar ainda mais este projeto, diversos recursos atuais e de grande valia estariam disponíveis para serem utilizados.
+
+
+\subsubsection{GitHub}
+\label{subsubsec:github}
+
+A plataforma de armazenamento de código teve dois papeis fundamentais para essa parte do projeto: o primeiro - e mais óbvio - é que o código foi versionado através da mesma, assim como os demais módulos da solução. No entanto, o segundo ponto é que a funcionalidade \textit{GitHub Pages} permitiu disponibilizar esse aplicativo \online{} e com um certificado HTTPS (requisito para o desenvolvimento de um \textit{PWA}). Com isso, foi possível hospedar o aplicativo e realizar a demonstração através da própria plataforma, como é possível ver na figura \ref{fig:github_pages}.
+
+\begin{figure}[H]
+    \centering
+    \caption{\textit{GitHub Pages}}
+    \frame{\includegraphics[width=1.0\textwidth]{./content/textuais/imagens/github_pages.png}}
+    \label{fig:github_pages}
+\end{figure}
+
+
+\subsubsection{JavaScript}
+\label{subsubsec:javascript}
+
+A linguagem de programação utilizada para fazer todo o aplicativo. É o responsável por criar os registros das falhas na tela dinamicamente, é nele que os \textit{Service Workers} são escritos (\textit{scripts} responsáveis por viabilizar o desenvolvimento das \textit{PWAs}), também é através dele que a comunicação com o \textit{firebase} é realizada e, por fim, é quem controla a inserção e leitura do \textit{localStorage} (mecanismo do navegador que permite o armazenamento de informações).
+
+O trecho de código abaixo apresenta o registro do \textit{service worker} que permite que o aplicativo seja utilizado mesmo sem conexão com a rede (\textit{off-line}):
+
+\vspace*{1cm}
+\begin{python}
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+            .register('service-worker.js')
+            .then(reg => console.log("[ServiceWorker] Registered..."))
+            [ . . .]
+\end{python}
+\vspace*{1cm}
+
+
+
 \subsection{O Aplicativo}
 \label{subsec:o_aplicativo}
 
@@ -178,4 +225,9 @@ Isso porque, em virtude de relacionar-se com diversas variáveis (velocidade da 
 
 Em razão disso, era necessário chamar a atenção dos responsáveis por manter a rede funcionando de alguma forma. Analisando as tecnologias disponíveis nos dias de hoje, chegou-se ao consenso que uma notificação no celular é, provavelmente, um dos melhores meios de chamar a atenção de alguém. Na imagem abaixo, é possível visualizar a interface da versão final do aplicativo:
 
-{\huge IMAGEM DA PWA AQUI}
+\begin{figure}[!htb]
+    \centering
+    \caption{\textit{Aplicativo}}
+    \frame{\includegraphics[width=0.4\textwidth]{./content/textuais/imagens/pwa.jpeg}}
+    \label{fig:aplicativo}
+\end{figure}
