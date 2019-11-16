@@ -11,11 +11,53 @@ import {
 
 function Demonstration() {
   const [maquinas, setMaquinas] = useState([]);
+  const [networkId, setNetworkId] = useState('');
+  const nomeNetwork = 'dockerNetwork';
+  const driver = '?';
+  const address = 'localhost:5000';
 
   useEffect(() => {
+    let resposta = {status: 1, network_id: 1};
+    // fetch(address+'/network/criar', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     nome: {containerId},
+    //     driver: {driver}
+    //   })
+    // })
+    // .then(response => response.json())
+    // .then(json => resposta = json);
+    console.log(resposta.mensagem);
+
+    // fetch(address+'/container/consultar/network/'+networkId)
+    // .then(response => response.json())
+    // .then(json => setMaquinas(json.containers))
+
+    if (resposta.status == 1) {
+      setNetworkId(resposta.network_id);
+      const intervalId = setInterval(() => {
+        atualizaMaquinas();
+      }, 5000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, []);
+
+  const atualizaMaquinas = () => {
+    // fetch(address+'/container/consultar/network/'+networkId)
+    // .then(response => response.json())
+    // .then(json => setMaquinas(json.containers))
+
     const maquinasNovas = [
       {
         id: "1",
+        nome: "Postgres",
         status: 0,
         mensagem: "Informações localizadas",
         cpu: "90%",
@@ -23,6 +65,7 @@ function Demonstration() {
       },
       {
         id: "2",
+        nome: "Apache",
         status: 1,
         mensagem: "Informações localizadas",
         cpu: "50%",
@@ -30,6 +73,7 @@ function Demonstration() {
       },
       {
         id: "3",
+        nome: "Oracle",
         status: 1,
         mensagem: "Informações localizadas",
         cpu: "10%",
@@ -37,79 +81,85 @@ function Demonstration() {
       },
       {
         id: "4",
-        status: 1,
+        nome: "Python",
+        status: 2,
         mensagem: "Informações localizadas",
         cpu: "60%",
         ram: "2048MB"
       },
       {
         id: "5",
+        nome: "AppServer",
         status: 0,
         mensagem: "Informações localizadas",
         cpu: "99%",
         ram: "8000MB"
       }];
-    // fetch('localhost:5000/container/lista')
-    // .then(response => response.json())
-    // .then(json => setMaquinas(json))
     setMaquinas(maquinasNovas);
-
-    // const intervalId = setInterval(() => {
-    //   atualizaMaquinas();
-    // }, 5000);
-
-    // return () => {
-    //   clearInterval(intervalId);
-    // };
-
-  }, []);
-
-  const atualizaMaquinas = () => {
-    // const maquinasNovas = maquinas.map(maquina => {
-    //     fetch('localhost:5000/container/consultar/'+maquina.id)
-    //     .then(response => response.json())
-    //     .then(json => maquina = json)
-    //     return maquina
-    // })
-    
   }
 
   const handleCriarClick = (distroMaquina, versaoMaquina) => {
     console.log("Distro: " + distroMaquina + ", Versão: " + versaoMaquina);
+    let nomeContainer = prompt('Informa um nome para o container');
 
-    // let resposta = {};
-    // fetch('localhost:5000/container/iniciar', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     distro: {distroMaquina},
-    //     versao: {versaoMaquina},
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(json => resposta = json);
-
-
+    let resposta = {mensagem: "Ok"};
+    fetch(address+'/container/iniciar', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nome: nomeContainer,
+        distro: distroMaquina,
+        versao: versaoMaquina,
+        network: nomeNetwork,
+      })
+    })
+    .then(response => response.json())
+    .then(json => resposta = json);
+    alert(resposta.mensagem);
+    console.log(resposta.mensagem);
   }
 
   const handlePararClick = (containerId) => {
     console.log("Parar container: " + containerId);
-    // let resposta = {};
-    // fetch('localhost:5000/container/parar', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     container_id: containerId,
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(json => resposta = json);
+    let resposta = {mensagem: "Teste"};
+    fetch(address+'/container/parar', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        container_id: containerId,
+      })
+    })
+    .then(response => response.json())
+    .then(json => resposta = json);
+
+    alert(resposta.mensagem);
+    console.log(resposta.mensagem);
+  }
+
+  const handleRemoverClick = (containerId) => {
+    console.log("Remover container: " + containerId);
+    let resposta = {};
+    fetch(address+'/container/remover', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        container_id: containerId,
+      })
+    })
+    .then(response => response.json())
+    .then(json => resposta = json);
+
+    alert(resposta.mensagem);
+    console.log(resposta.mensagem);
   }
 
   return (
@@ -126,15 +176,17 @@ function Demonstration() {
                 <div className="blockquote blockquote-info">
                   <p>
                     <span className="font-weight-bold">
-                      ID: {maquina.id}<br/>
-                      Status: {maquina.status === 1 ? 'Normal' : 'Falho'}<br/>
-                      Mensagem: {maquina.mensagem}<br/>
+                      Nome: {maquina.nome}<br/>
+                      Status: {maquina.status === 1 ? 'Normal' : maquina.status === 2 ? 'FALHO' : 'Parado'}<br/>
                       Uso de CPU: {maquina.cpu}<br/>
                       Uso de memória: {maquina.ram}
                     </span>
                   </p>
                   <Button className="btn-round" color="secondary" onClick={() => handlePararClick(maquina.id)}>
                     Parar
+                  </Button>
+                  <Button className="btn-round" color="secondary" onClick={() => handleRemoverClick(maquina.id)}>
+                    Remover
                   </Button>
                 </div>
               </Col>
