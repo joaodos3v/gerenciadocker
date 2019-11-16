@@ -2,6 +2,7 @@ import socket
 import pickle
 import json
 import time
+import random
 
 tested_up = []
 state = []
@@ -107,10 +108,12 @@ def TestarMaquina(index):
 
 def RealizarVerificacao(conexao):
     # se tem que fazer alguma coisa aqui
-    erro = input("Há um erro na maquina? (S ou N) :")
-    if erro == "S":
-       EnviarResposta(conexao, "ERROR")
+    erro = random.randint(0, 5)
+    if erro == 1:
+        print('Máquina com erro!')
+        EnviarResposta(conexao, "ERROR")
     else: 
+        print('Máquina funcionando.')
         EnviarResposta(conexao, "OK")
 
 
@@ -176,7 +179,7 @@ def DistribuirInformacao():
         EnviarInformacao(maquina, "keepInfo")
         RetornaInformacao(maquina, True)
         maquina.close()
-    else
+    else:
         print("Não há mais máquinas funcionando normalmente.")
 
 
@@ -270,7 +273,7 @@ def IniciarExecucao():
     global ip_host
 
     ip_host = CapturarIPHost()
-    porta_host = int(input("Informe a porta (0 para sair): "))
+    porta_host = 5001
 
     while int(porta_host) > 0:
         print("\n\n\n")
