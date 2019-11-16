@@ -11,50 +11,29 @@ import {
 
 function Demonstration() {
   const [maquinas, setMaquinas] = useState([]);
-  const [networkId, setNetworkId] = useState('');
   const nomeNetwork = 'dockerNetwork';
-  const driver = '?';
-  const address = 'localhost:5000';
+  const nomeDriver = 'bridge';
+  const address = 'http://localhost:5000';
 
   useEffect(() => {
-    let resposta = {status: 1, network_id: 1};
-    // fetch(address+'/network/criar', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     nome: {containerId},
-    //     driver: {driver}
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(json => resposta = json);
-    console.log(resposta.mensagem);
+    let resposta = {status: 0, network_id: 44};
+     fetch(address+'/network/criar', {
+       method: 'POST',
+       headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({
+         nome: {nomeNetwork},
+         driver: {nomeDriver},
+       })
+     })
+     .then(response => response.json())
+     .then(json => {resposta = json});
+    console.log(resposta);
 
-    // fetch(address+'/container/consultar/network/'+networkId)
-    // .then(response => response.json())
-    // .then(json => setMaquinas(json.containers))
-
-    if (resposta.status == 1) {
-      setNetworkId(resposta.network_id);
-      const intervalId = setInterval(() => {
-        atualizaMaquinas();
-      }, 5000);
-
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, []);
-
-  const atualizaMaquinas = () => {
-    // fetch(address+'/container/consultar/network/'+networkId)
-    // .then(response => response.json())
-    // .then(json => setMaquinas(json.containers))
-
-    const maquinasNovas = [
+    /*
+     const maquinasNovas = [
       {
         id: "1",
         nome: "Postgres",
@@ -95,8 +74,21 @@ function Demonstration() {
         cpu: "99%",
         ram: "8000MB"
       }];
-    setMaquinas(maquinasNovas);
-  }
+    */
+
+    if (resposta.status == 1) {
+      setNetworkId(resposta.network_id);
+      const intervalId = setInterval(() => {
+        fetch(address+'/container/consultar/network/'+networkId)
+        .then(response => response.json())
+        .then(json => setMaquinas(json.containers))
+      }, 5000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, []);
 
   const handleCriarClick = (distroMaquina, versaoMaquina) => {
     console.log("Distro: " + distroMaquina + ", Versão: " + versaoMaquina);
