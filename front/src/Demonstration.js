@@ -76,10 +76,9 @@ function Demonstration() {
       }];
     */
 
-    if (resposta.status == 1) {
-      setNetworkId(resposta.network_id);
+    if (resposta.status === 1) {
       const intervalId = setInterval(() => {
-        fetch(address+'/container/consultar/network/'+networkId)
+        fetch(address+'/container/consultar/network/'+resposta.network_id)
         .then(response => response.json())
         .then(json => setMaquinas(json.containers))
       }, 5000);
