@@ -24,8 +24,8 @@ function Demonstration() {
          'Content-Type': 'application/json',
        },
        body: JSON.stringify({
-         nome: {nomeNetwork},
-         driver: {nomeDriver},
+         nome: nomeNetwork,
+         driver: nomeDriver,
        })
      })
      .then(response => response.json())
