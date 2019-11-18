@@ -78,7 +78,7 @@ def IniciarExecucao():
 
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    host = CapturarIPHost()
+    host = 'localhost'  #CapturarIPHost()
     porta = int(input("Informe a porta para comunicar-se com o COORDENADOR: "))
     tupla = (host, porta)
     tcp.bind(tupla)

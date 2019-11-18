@@ -25,7 +25,7 @@ votos = []
 def AguardaConexao():
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    host = CapturarIPHost()
+    host = 'localhost' # CapturarIPHost()
     print(host)
     porta = int(input("Informe a porta para comunicar-se com o CLIENTE: "))
     tupla = (host, porta)
@@ -90,7 +90,7 @@ def Comunicacao(conexao_cliente, mensagem):
                     EnviarEReceber(conexoes[i], "ABORT")
         else:
             status_participantes = EnviarEReceber(conexoes, "doCommit")
-            conexao_cliente.send(mensagem)
+            conexao_cliente.send(mensagem.encode('utf-8'))
 
 
 def doAbort(conexao_cliente, participantes):
