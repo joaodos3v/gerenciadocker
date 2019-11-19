@@ -14,8 +14,10 @@ class Network(Model):
         comando = 'docker network rm %s' % self.id
         return self.executar_comando(comando)
     
-    def consultar(self):
+    def consultar(self, atributo=None):
         comando = 'docker inspect %s' % self.id
         s_infos_network = self.executar_comando(comando)
         json_infos_network = json.loads(s_infos_network)
+        if atributo == "Containers":
+            return json_infos_network[0][atributo]
         return json_infos_network
