@@ -1,63 +1,96 @@
 import {
-  MdLanguage,
-  MdLightbulbOutline,
-  MdMailOutline,
-  MdPlayCircleOutline,
-  MdRadio,
-  MdSnooze,
-  MdThumbsUpDown,
-  MdThumbUp,
+  MdVerifiedUser,
+  MdWarning
 } from 'react-icons/md';
 
-export const iconWidgetsData = [
+/**
+ *  == EXEMPLO DE ARRAY VISUAL DE "MÁQUINAS" ==
+ * 
+ *  => DEFINIÇÕES:
+ *    + O ícone "MdVerifiedUser" deve ser usado quando um container está OK pelo adaptive
+ *    + O ícone "MdLightbulbOutline" nas demais situações
+ */
+export const machines = [
+
+  /** EXEMPLO DE CONTAINER [NEUTRO] */
   {
-    bgColor: 'primary',
-    icon: MdThumbUp,
-    title: 'Primary',
-    subtitle: 'widget subtitle',
-  },
-  {
-    bgColor: 'secondary',
-    icon: MdThumbsUpDown,
-    title: 'Secondary',
-    subtitle: 'widget subtitle',
-  },
-  {
+    // Visuais
     bgColor: 'success',
-    icon: MdLanguage,
-    title: 'Success',
-    subtitle: 'widget subtitle',
-  },
-  {
-    bgColor: 'danger',
-    icon: MdLightbulbOutline,
-    title: 'Danger',
-    subtitle: 'widget subtitle',
-  },
-  {
-    bgColor: 'warning',
-    icon: MdPlayCircleOutline,
-    title: 'Warning',
-    subtitle: 'widget subtitle',
-  },
-  {
-    bgColor: 'info',
-    icon: MdRadio,
-    title: 'Info',
-    subtitle: 'widget subtitle',
-  },
-  {
-    bgColor: 'light',
-    icon: MdSnooze,
-    title: 'Light',
-    subtitle: 'widget subtitle',
+    icon: MdVerifiedUser,
     inverse: false,
+
+    // Da API
+    name: 'Ubuntu 16.04',
+    status: 'Funcionando',  // STATUS DO ADAPTIVE (se quiser, pode trocar pra 0 e 1, mas vai precisar alterar a view)
+    message: 'Informações localizadas',
+    progress: [
+      {
+        label: "CPU",
+        value: "90%",
+        percentage: "90",
+        color: "danger" // < 75 = success || > = danger
+      },
+      {
+        label: "RAM",
+        value: "1024MB",
+        percentage: "70",
+        color: "success" // < 75 = success || > = danger
+      },
+    ]
   },
+
+  /** EXEMPLO DE CONTAINER [COM FALHA] */
   {
-    bgColor: 'dark',
-    icon: MdMailOutline,
-    title: 'Dark',
-    subtitle: 'widget subtitle',
+    // Visuais
+    bgColor: 'danger',
+    icon: MdWarning,
+    inverse: false,
+
+    // Da API
+    name: 'Postgres',
+    status: 'Com Falha',  // STATUS DO ADAPTIVE (se quiser, pode trocar pra 0 e 1, mas vai precisar alterar a view)
+    message: 'Informações localizadas',
+    progress: [
+      {
+        label: "CPU",
+        value: "90%",
+        percentage: "90",
+        color: "danger" // < 75 = success || > = danger
+      },
+      {
+        label: "RAM",
+        value: "1024MB",
+        percentage: "70",
+        color: "success" // < 75 = success || > = danger
+      },
+    ]
+  },
+
+  /** EXEMPLO DE CONTAINER [PERFEITO] */
+  {
+    // Visuais
+    bgColor: 'success',
+    icon: MdVerifiedUser,
+    inverse: false,
+
+    // Da API
+    name: 'MySQL',
+    status: 'Funcionando',  // STATUS DO ADAPTIVE (se quiser, pode trocar pra 0 e 1, mas vai precisar alterar a view)
+    message: 'Informações localizadas',
+    progress: [
+      {
+        label: "CPU",
+        value: "45%",
+        percentage: "45",
+        color: "success" // < 75 = success || > = danger
+      },
+      {
+        label: "RAM",
+        value: "512MB",
+        percentage: "15",
+        color: "success" // < 75 = success || > = danger
+      },
+    ]
   },
 ];
 
