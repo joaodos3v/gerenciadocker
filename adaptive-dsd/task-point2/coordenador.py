@@ -65,11 +65,11 @@ def Multiplicar(valor, multiplicador):
 
 
 def Comunicacao(conexao_cliente, mensagem):
-    participantes = ['localhost']
-
-    porta = int(input("Informe a porta para comunicar-se com os PARTICIPANTES: "))    
+    participantes = ['localhost', 'localhost']
+    
     conexoes = []
     for ip in participantes:
+        porta = int(input("Informe a porta para comunicar-se com os PARTICIPANTES: "))    
         cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         cliente.connect((ip, porta))
         conexoes.append(cliente)
@@ -98,7 +98,7 @@ def doAbort(conexao_cliente, participantes):
     EnviarEReceber(participantes, "ABORT")
     
     # Retorna a mensagem final ao cliente, informando que a transação não pôde ser finalizada
-    conexao_cliente.send("Transação cancelada, pois um dos participantes não concordou com a solicitação!")
+    conexao_cliente.send("Transação cancelada, pois um dos participantes não concordou com a solicitação!".encode('utf-8'))
 
     
 def preCommit(participantes):
@@ -113,10 +113,12 @@ def EnviarEReceber(conexoes, mensagem):
     # Zerando os votos
     global votos
     votos = []    
-    for i in range(len(conexoes)):
-        enviando = Thread(target=IniciarThreadEnvio, args=(conexoes[i],mensagem, i,))
-        enviando.start()
-        enviando.join()
+    print(type(conexoes))
+    if not type(conexoes) == socket.socket:
+        for i in range(len(conexoes)):
+            enviando = Thread(target=IniciarThreadEnvio, args=(conexoes[i],mensagem, i,))
+            enviando.start()
+            enviando.join()
 
     print("###### Votos dos participantes ########")
     print(votos)
