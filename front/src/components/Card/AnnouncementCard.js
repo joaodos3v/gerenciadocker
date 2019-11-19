@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'utils/propTypes';
 
-import { Card, CardHeader, CardBody, CardText, Button } from 'reactstrap';
+import { Card, CardHeader, CardBody, CardText, Badge } from 'reactstrap';
 
 import Avatar from 'components/Avatar';
+import Typography from 'components/Typography';
 
 import classNames from 'classnames';
 
@@ -16,7 +17,7 @@ const AnnouncementCard = ({
   date,
   text,
   className,
-  buttonProps,
+  badgeLinks,
   ...restProps
 }) => {
   const bgColor = `bg-${color}`;
@@ -32,12 +33,20 @@ const AnnouncementCard = ({
       <CardBody className="d-flex flex-wrap flex-column align-items-center justify-content-center">
         <Avatar size={avatarSize} src={avatar} />
         <CardText className="text-center">
-          <strong className="d-block">{name}</strong>
-          <small className="text-muted">{date}</small>
+          <Typography type="h4"><strong className="d-block">{name}</strong></Typography>
+          <Typography type="h5"><small className="text-muted">{date}</small></Typography>
         </CardText>
         <CardText className="text-center">{text}</CardText>
+        <CardText className="text-center">
+          {badgeLinks && badgeLinks.map(badgeLink => {
+            return (
+              <Badge href={badgeLink.href} target="_blank" color={badgeLink.color} className="mr-1">
+                {badgeLink.text}
+              </Badge>
+            )
+          })}
+        </CardText>
 
-        <Button color="primary" {...buttonProps} />
       </CardBody>
     </Card>
   );
