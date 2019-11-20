@@ -71,10 +71,10 @@ def IniciarExecucao():
             break
         porta = int(input("Informe a porta para conectar: "))
 
-        # cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # cliente.connect((ip, porta))
+        cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        cliente.connect((ip, porta))
 
-        # EnviaRequisicao(cliente, lista)
+        EnviaRequisicao(cliente, lista)
         
 
 if __name__ == "__main__":
