@@ -3,7 +3,7 @@ import PropTypes from 'utils/propTypes';
 
 import classNames from 'classnames';
 
-import { Badge, Card, CardBody, CardText, CardTitle, CardSubtitle, Progress } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardText, CardTitle, CardSubtitle, Progress } from 'reactstrap';
 import Typography from '../Typography';
 import { MdCheck, MdClose } from 'react-icons/md';
 
@@ -61,6 +61,9 @@ const IconWidget = ({
             </div>
           )
         })}
+        <Button outline color="primary" className="mr-3">Pausar</Button>
+        <Button outline color="secondary" className="mr-3">Retomar</Button>
+        <Button outline color="danger">Excluir</Button>
       </CardBody>
     </Card>
   );
