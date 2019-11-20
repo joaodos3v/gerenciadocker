@@ -1,14 +1,18 @@
 import Page from 'components/Page';
 import { IconWidget } from 'components/Widget';
-import { machines } from 'demos/widgetPage';
 import React, { useState, useEffect } from 'react';
 import {
   Col,
   Row,
 } from 'reactstrap';
+import {
+  MdVerifiedUser,
+  MdWarning
+} from 'react-icons/md';
 
 
 function MonitoringPage() {
+  const [maquinasInfos, setMaquinasInfo] = useState([]);
   const [maquinas, setMaquinas] = useState([]);
   const nomeNetwork = 'dockerNetwork';
   const nomeDriver = 'bridge';
@@ -16,87 +20,23 @@ function MonitoringPage() {
 
   useEffect(() => {
     let resposta = {status: 0, network_id: 44};
-    fetch(address+'/network/criar', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nome: nomeNetwork,
-        driver: nomeDriver,
-      })
-    })
-    .then(response => response.json())
-    .then(json => {resposta = json});
-    console.log(resposta);
+    // fetch(address+'/network/criar', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     nome: nomeNetwork,
+    //     driver: nomeDriver,
+    //   })
+    // })
+    // .then(response => response.json())
+    // .then(json => {resposta = json});
+    // console.log(resposta);
 
-      /*
+      
       const maquinasNovas = [
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
       {
         id: "1",
         nome: "Postgres",
@@ -137,44 +77,61 @@ function MonitoringPage() {
         cpu: "99%",
         ram: "8000MB"
       }];
-      */
+    setMaquinasInfo(maquinasNovas);
 
-    if (resposta.status === 1) {
-      const intervalId = setInterval(() => {
-        fetch(address+'/container/consultar/network/'+resposta.network_id)
-        .then(response => response.json())
-        .then(json => setMaquinas(json.containers))
-      }, 5000);
+    // if (resposta.status === 1) {
+    //   const intervalInfoId = setInterval(() => {
+    //     fetch(address+'/container/consultar/network/'+resposta.network_id)
+    //     .then(response => response.json())
+    //     .then(json => setMaquinasInfo(json.containers))
+    //   }, 5000);
 
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
+    //   const intervalTestId = setInterval(() => {
+    //     fetch(address+'/container/consultar/network/')
+    //     .then(response => response.json())
+    //     .then(json => setMaquinasInfo(json.containers))
+    //   }, 30000);
+
+    //   return () => {
+    //     clearInterval(intervalInfoId);
+    //     clearInterval(intervalTestId);
+    //   };
+    // }
   }, []);
 
-  const handleCriarClick = (distroMaquina, versaoMaquina) => {
-    console.log("Distro: " + distroMaquina + ", Versão: " + versaoMaquina);
-    let nomeContainer = prompt('Informa um nome para o container');
-
-    let resposta = {mensagem: "Ok"};
-    fetch(address+'/container/iniciar', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nome: nomeContainer,
-        distro: distroMaquina,
-        versao: versaoMaquina,
-        network: nomeNetwork,
-      })
-    })
-    .then(response => response.json())
-    .then(json => resposta = json);
-    alert(resposta.mensagem);
-    console.log(resposta.mensagem);
-  }
+  useEffect(() => {
+    const maquinasNovas = maquinasInfos.map((maquina) => {
+      let cpuPercentage = parseInt(maquina.cpu.replace("%", "/"));
+      let ramPercentage = parseInt(maquina.ram.replace("%", "/"));
+      return (
+      {
+        // Visuais
+        bgColor: maquina.status === 2 ? 'danger' : 'success',
+        icon: maquina.status === 2 ? MdWarning : MdVerifiedUser,
+        inverse: false,
+    
+        // Da API
+        name: maquina.nome,
+        status: maquina.status === 2 ? 'Com Falha' : maquina.status === 0 ? 'Parado' : 'Funcionando',  
+        message: 'Informações localizadas',
+        progress: [
+          {
+            label: "CPU",
+            value: maquina.cpu,
+            percentage: String(cpuPercentage),
+            color: cpuPercentage >= 75 ? "danger" : "success" // < 75 = success || > = danger
+          },
+          {
+            label: "RAM",
+            value: "1024MB",
+            percentage: String(ramPercentage),
+            color: ramPercentage >= 75 ? "danger" : "success" // < 75 = success || > = danger
+          },
+        ]
+      });
+    });
+    setMaquinas(maquinasNovas);
+  }, [maquinasInfos]);
 
   const handlePararClick = (containerId) => {
     console.log("Parar container: " + containerId);
@@ -223,7 +180,7 @@ function MonitoringPage() {
     >
 
       <Row>
-        {machines.map(
+        {maquinas.map(
           ({ bgColor, icon, name, status, message, progress, ...restProps }, index) => (
             <Col key={index} lg={4} md={6} sm={6} xs={12} className="mb-3">
               <IconWidget

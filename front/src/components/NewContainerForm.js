@@ -3,15 +3,51 @@ import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 
 class NewContainerForm extends React.Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+      nomeContainer: '',
+      distroMaquina: '',
+    }
 
+    this.updateInput = this.updateInput.bind(this);
+  }
+    
+    
+  updateInput(event){
+    this.setState({nomeContainer : event.target.value})
+  }
+  
   handleSubmit = event => {
-    event.preventDefault();
-    alert("Vsf Nelson");
-  };
+    let nomeNetwork = 'dockerNetwork';
+    let address = 'http://localhost:5000';
+    console.log("Distro: " + this.state.distroMaquina + ", Nome: " + this.state.nomeContainer);
+
+    let resposta = {mensagem: "Ok"};
+    // fetch(address+'/container/iniciar', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     nome: this.state.nomeContainer,
+    //     distro: this.state.distroMaquina,
+    //     versao: 'Latest',
+    //     network: nomeNetwork,
+    //   })
+    // })
+    // .then(response => response.json())
+    // .then(json => resposta = json);
+    alert(resposta.mensagem);
+    console.log(resposta.mensagem);
+  }
 
   render() {
     const {
       distroLabel,
+      nomeLabel,
       children,
     } = this.props;
 
@@ -21,8 +57,11 @@ class NewContainerForm extends React.Component {
           <h4>Novo Container</h4>
         </div>
         <FormGroup>
+          <Label for={nomeLabel}>{nomeLabel}</Label>
+          <Input type="text" name="container" onChange={this.updateInput}/>
+          <br/>
           <Label for={distroLabel}>{distroLabel}</Label>
-          <Input type="select" name="select">
+          <Input type="select" name="select" >
             <option>Distro 1</option>
             <option>Distro 2</option>
             <option>Distro 3</option>
@@ -46,10 +85,12 @@ class NewContainerForm extends React.Component {
 
 NewContainerForm.propTypes = {
   distroLabel: PropTypes.string,
+  nomeLabel: PropTypes.string,
 };
 
 NewContainerForm.defaultProps = {
-  distroLabel: 'Distribuição'
+  distroLabel: 'Distribuição',
+  nomeLabel: 'Nome do Container',
 };
 
 export default NewContainerForm;
