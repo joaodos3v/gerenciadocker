@@ -221,7 +221,6 @@ def RetornaInformacao(conexao, verificacao):
         EnviarInformacao(conexao, json_tested)
         EnviarInformacao(conexao, json_state)
     else:
-        EnviarResposta(conexao, json_tested)
         EnviarResposta(conexao, json_state)
     conexao.close()
 
