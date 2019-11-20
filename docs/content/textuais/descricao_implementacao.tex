@@ -139,7 +139,7 @@ Esta decisão possibilitou que o \textit{frontend} fosse criado com foco total e
 \subsection{O Sistema}
 \label{sec:o_sistema}
 
-Essa biblioteca realmente atendeu às expectativas e permitiu que as duas principais telas do sistema fossem criadas realmente conforme o pretendido. A primeira, que pode ser visualizada na figura \ref{fig:landing_page}, serve simplesmente como uma tela de boas-vindas ao usuário, na qual ele poderá ler um breve resumo do que é a plataforma, entender em quais pontos ela pode ser útil e ver quem são as membros da equipe que criou o projeto.
+A biblioteca \textit{React} realmente atendeu às expectativas e permitiu que as duas principais telas do sistema fossem criadas realmente conforme o pretendido. A primeira, que pode ser visualizada na figura \ref{fig:landing_page}, serve simplesmente como uma tela de boas-vindas ao usuário, na qual ele poderá ler um breve resumo das vantagens que a plataforma pode proporcionar e, ver quem são as membros da equipe que criou o projeto na seção \aspas{Membros}.
 
 \begin{figure}[H]
     \centering
@@ -148,16 +148,18 @@ Essa biblioteca realmente atendeu às expectativas e permitiu que as duas princi
     \label{fig:landing_page}
 \end{figure}
 
-Já a segunda, que é a tela de demonstração, é o local mais importante do sistema e pode ser acessado através do botão \aspas{Iniciar} exibido na figura \ref{fig:landing_page}. É nesse ambiente que o usuário criará sua \dockerNetwork{} e visualizará o estado atual de cada um dos \containers{} que a compõe. Além disso, também é possível interagir com cada \conteiner{} individualmente e utilizar opções como \aspas{Pausar}, \aspas{Retomar} ou \aspas{Excluir}, tal como pode ser visualizado na figura 3.
+Já a segunda, que é a tela de monitoramento, é o local mais importante do sistema e pode ser acessado através do botão \aspas{Monitormento} exibido na figura \ref{fig:landing_page}. É nesse ambiente que o usuário criará sua \dockerNetwork{} e visualizará o estado atual de cada um dos \containers{} que a compõe. Além disso, também é possível interagir com cada \conteiner{} individualmente e utilizar opções como \aspas{Pausar}, \aspas{Retomar} ou \aspas{Excluir}, tal como pode ser visualizado na figura \ref{fig:monitoramento}.
 
-{\huge TELA DE DEMONSTRAÇÃO AQUI}
+\begin{figure}[H]
+    \centering
+    \caption{\textit{Monitormento}}
+    \frame{\includegraphics[width=1.0\textwidth]{./content/textuais/imagens/landing-page.png}} %Só copiei pra fazer a referência
+    \label{fig:monitoramento}
+\end{figure}
 
+A principal funcionalidade utilizada na tela de monitoramento são os \textit{Hooks} que permitem criar estados para armazenamento de dados e variáveis de forma rápida em uma função. Isto acelera o desenvolvimento, pois retira a necessidade da criação de classes para o funcionamento do \textit{front}.
 
-
-
-
-
-
+Os \textit{Hooks} auxiliam o desenvolvedor a alcançar o principal objetivo do \textit{React}, fazer uma atualização dinâmica e prática dos componentes presentes na página, reduzindo o consumo de recursos e complexidade, pois abstraem conceitos e métodos para facilitar a construção da página.
 
 % PWA-------------------------------------------------------------------
 \section{PWA}
@@ -165,7 +167,7 @@ Já a segunda, que é a tela de demonstração, é o local mais importante do si
 
 Os \textit{Progressive Web Apps}, que recentemente vem ganhando bastante popularidade e adeptos, podem ser definidos como \cite{Souza19} \aspas{uma aplicação \web{} com tecnologias que permitem termos a experiência de uso muito próxima da oferecida pelos \textit{mobile apps}}. Isso quer dizer, basicamente, que ao acessar um \textit{site}, o usuário terá a opção de adicionar um \aspas{atalho} para este no seu celular.
 
-Porém, ao abrir esse atalho, a experiência para o utilizador será de estar utilizando um aplicativo nativo, como se tivesse \aspas{instalado o \textit{site}} em seu dispositivo. Isso porque ele não verá uma barra exibindo a \textit{URL} que está sendo acessada e, além disso, funções nativas do celular - como acesso à câmera, geolocalização, aos contatos e \textit{push notifications} - estarão em pleno funcionamento. Esse tipo de solução tem sido testada e utilizada por grandes empresas como Uber, Twitter e Facebook, por exemplo, em virtude de algumas vantagens que ela apresenta sobre os \textit{apps} nativos, principalmente em dois pontos: custos e engajamento do cliente.
+Porém, ao abrir esse atalho, a experiência para o usuário será de estar utilizando um aplicativo nativo, como se tivesse \aspas{instalado o \textit{site}} em seu dispositivo. Isso porque ele não verá uma barra exibindo a \textit{URL} que está sendo acessada e, além disso, funções nativas do celular - como acesso à câmera, geolocalização, aos contatos e \textit{push notifications} - estarão em pleno funcionamento. Esse tipo de solução tem sido testada e utilizada por grandes empresas como Uber, Twitter e Facebook, por exemplo, em virtude de algumas vantagens que ela apresenta sobre os \textit{apps} nativos, principalmente em dois pontos: custos e engajamento do cliente.
 
 
 Primeiramente, no quesito despesas, utilizar um \textit{PWA} permite que, com poucas alterações no site da empresa, ela disponibilize um \aspas{aplicativo} - o que economiza tempo de desenvolvimento e, consequentemente, dinheiro. Em segundo lugar, geralmente os \textit{PWAs} são mais rápidos, ocupam menos espaço de armazenamento no dispositivo e, em casos reais, ficou comprovado que a facilidade em obter esse \textit{app} gera mais conversão de clientes, conforme \cite{Souza19} \aspas{o Flipkart que é o maior e-commerce da Índia, eles decidiram fazer uma experiência mobile através de uma PWA e aumentaram a sua conversão em 70\%}.
@@ -183,7 +185,7 @@ Ao fim da sua construção, pode-se dizer que esse aplicativo possui três eleme
 \subsubsection{Firebase}
 \label{subsubsec:firebase}
 
-A plataforma, desenvolvida pela Google com o objetivo de tornar o desenvolvimento de aplicativos e sistemas mais fácil e rápida, é quem possibilita o envio das \textit{push notifications} pois, na realidade, é ela quem gerencia o envio e recebimento desses avisos. Isso porque, toda vez que o \adaptive{} detectar uma falha, ele enviará uma requisição \textit{POST} para um servidor do Firebase e, somente então, o Firebase irá reconhecer quem deve receber essa mensagem e entregá-la ao destinatário final.
+A plataforma, desenvolvida pela Google com o objetivo de tornar o desenvolvimento de aplicativos e sistemas mais fácil e rápida, é quem possibilita o envio das \textit{push notifications} pois, na realidade, é ela quem gerencia o envio e recebimento desses avisos. Isso porque, toda vez que a \textit{API} obter a informação de uma falha no container, ela enviará uma requisição \textit{POST} para um servidor do Firebase e, somente então, o Firebase irá reconhecer quem deve receber essa mensagem e entregá-la ao destinatário final.
 
 Além desse grande auxílio, a plataforma possui um console completamente focado em escalar exponencialmente qualquer tipo de solução que a utilize, tal como permitir a utilização de um banco de dados de tempo real em poucos \textit{clicks}. Essa grande variadade de ferramentas disponibilizadas pela mesma plataforma é um fato bastante positivo pois, caso o grupo decida incrementar ainda mais este projeto, diversos recursos atuais e de grande valia estariam disponíveis para serem utilizados.
 
@@ -204,7 +206,7 @@ A plataforma de armazenamento de código teve dois papeis fundamentais para essa
 \subsubsection{JavaScript}
 \label{subsubsec:javascript}
 
-A linguagem de programação utilizada para fazer todo o aplicativo. É o responsável por criar os registros das falhas na tela dinamicamente, é nele que os \textit{Service Workers} são escritos (\textit{scripts} responsáveis por viabilizar o desenvolvimento das \textit{PWAs}), também é através dele que a comunicação com o \textit{firebase} é realizada e, por fim, é quem controla a inserção e leitura do \textit{localStorage} (mecanismo do navegador que permite o armazenamento de informações).
+A linguagem de programação utilizada para fazer todo o aplicativo. É a responsável por criar os registros das falhas na tela dinamicamente, é nela que os \textit{Service Workers} são escritos (\textit{scripts} responsáveis por viabilizar o desenvolvimento das \textit{PWAs}), também é através dela que a comunicação com o \textit{firebase} é realizada e, por fim, é quem controla a inserção e leitura do \textit{localStorage} (mecanismo do navegador que permite o armazenamento de informações).
 
 O trecho de código abaixo apresenta o registro do \textit{service worker} que permite que o aplicativo seja utilizado mesmo sem conexão com a rede (\textit{off-line}):
 
@@ -227,7 +229,7 @@ Para tornar a solução ainda mais completa e próxima das necessidades do usuá
 
 Isso porque, em virtude de relacionar-se com diversas variáveis (velocidade da rede, infraestrutura, tamanho das equipes, entre outras), é possível que esse tipo de rede apresente pequenas falhas com o decorrer do tempo. Como é de conhecimento de todos, o profissional moderno precisa, além de realizar várias tarefas em paralelo, contar com uma certa mobilidade e, portanto, não seria agradável que um colaborador precisasse monitorar a tela do sistema em tempo integral para identificar quando ocorresse um problema.
 
-Em razão disso, era necessário chamar a atenção dos responsáveis por manter a rede funcionando de alguma forma. Analisando as tecnologias disponíveis nos dias de hoje, chegou-se ao consenso que uma notificação no celular é, provavelmente, um dos melhores meios de chamar a atenção de alguém. Na imagem abaixo, é possível visualizar a interface da versão final do aplicativo:
+Em razão disso, era necessário chamar a atenção dos responsáveis por manter a rede funcionando de alguma forma. Analisando as tecnologias disponíveis nos dias de hoje, chegou-se ao consenso que uma notificação no celular é, provavelmente, um dos melhores meios de chamar a atenção de alguém. Na figura \ref{fig:aplicativo}, é possível visualizar a interface da versão final do aplicativo:
 
 \begin{figure}[!htb]
     \centering
