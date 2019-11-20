@@ -10,7 +10,7 @@ let addFailure = (payload) => {
         "description": notification.body
     };
 
-    failures.data.push(newFailure);
+    failures.data.unshift(newFailure);
     window.localStorage.setItem('failures', JSON.stringify(failures));
 
     updateList();
