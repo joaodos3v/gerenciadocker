@@ -14,12 +14,13 @@ import {
 function MonitoringPage() {
   const [maquinasInfos, setMaquinasInfo] = useState([]);
   const [maquinas, setMaquinas] = useState([]);
-  const nomeNetwork = 'dockerNetwork';
+  const [network_id, setNetworkId] = useState(0);
+  const nomeNetwork = 'dockerNetwork'; 
   const nomeDriver = 'bridge';
   const address = 'http://localhost:5000';
 
   useEffect(() => {
-    let resposta = {status: 0, network_id: 44};
+    let resposta = {status: 1, network_id: nomeNetwork};
     // fetch(address+'/network/criar', {
     //   method: 'POST',
     //   headers: {
@@ -32,71 +33,89 @@ function MonitoringPage() {
     //   })
     // })
     // .then(response => response.json())
-    // .then(json => {resposta = json});
-    // console.log(resposta);
+    // .then(json => {
+    //   console.log(json);
+    //   resposta = json;
+    // })
+    // .catch(err => { 
+    //   console.error('Falha ao iniciar rede', err); 
+    // });
+    console.log(resposta);
 
-      
-      const maquinasNovas = [
-      {
-        id: "1",
-        nome: "Postgres",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "90%",
-        ram: "1024MB"
-      },
-      {
-        id: "2",
-        nome: "Apache",
-        status: 1,
-        mensagem: "Informações localizadas",
-        cpu: "50%",
-        ram: "4096MB"
-      },
-      {
-        id: "3",
-        nome: "Oracle",
-        status: 1,
-        mensagem: "Informações localizadas",
-        cpu: "10%",
-        ram: "512MB"
-      },
-      {
-        id: "4",
-        nome: "Python",
-        status: 2,
-        mensagem: "Informações localizadas",
-        cpu: "60%",
-        ram: "2048MB"
-      },
-      {
-        id: "5",
-        nome: "AppServer",
-        status: 0,
-        mensagem: "Informações localizadas",
-        cpu: "99%",
-        ram: "8000MB"
-      }];
-    setMaquinasInfo(maquinasNovas);
+  //   const maquinasNovas = [
+  //   {
+  //     id: "1",
+  //     nome: "Postgres",
+  //     status: 0,
+  //     mensagem: "Informações localizadas",
+  //     cpu: "90%",
+  //     ram: "1024MB"
+  //   },
+  //   {
+  //     id: "2",
+  //     nome: "Apache",
+  //     status: 1,
+  //     mensagem: "Informações localizadas",
+  //     cpu: "50%",
+  //     ram: "4096MB"
+  //   },
+  //   {
+  //     id: "3",
+  //     nome: "Oracle",
+  //     status: 1,
+  //     mensagem: "Informações localizadas",
+  //     cpu: "10%",
+  //     ram: "512MB"
+  //   },
+  //   {
+  //     id: "4",
+  //     nome: "Python",
+  //     status: 2,
+  //     mensagem: "Informações localizadas",
+  //     cpu: "60%",
+  //     ram: "2048MB"
+  //   },
+  //   {
+  //     id: "5",
+  //     nome: "AppServer",
+  //     status: 0,
+  //     mensagem: "Informações localizadas",
+  //     cpu: "99%",
+  //     ram: "8000MB"
+  //   }];
+  // setMaquinasInfo(maquinasNovas);
 
-    // if (resposta.status === 1) {
-    //   const intervalInfoId = setInterval(() => {
-    //     fetch(address+'/container/consultar/network/'+resposta.network_id)
-    //     .then(response => response.json())
-    //     .then(json => setMaquinasInfo(json.containers))
-    //   }, 5000);
+    if (resposta.status === 1) {
+      setNetworkId(resposta.network_id);
+      const intervalInfoId = setInterval(() => {
+        fetch(address+'/container/consultar/network/'+resposta.network_id)
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          setMaquinasInfo(json.containers);
+        })
+        .catch(err => { 
+          console.error('Falha ao receber dados', err); 
+        });
+      }, 5000);
 
-    //   const intervalTestId = setInterval(() => {
-    //     fetch(address+'/container/consultar/network/')
-    //     .then(response => response.json())
-    //     .then(json => setMaquinasInfo(json.containers))
-    //   }, 30000);
+      const intervalTestId = setInterval(() => {
+        let resposta = "";
+        fetch(address+'/adaptive/iniciar/'+resposta.network_id)
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+        })
+        .catch(err => { 
+          console.error('Falha ao iniciar teste', err); 
+        });
+      }, 30000);
 
-    //   return () => {
-    //     clearInterval(intervalInfoId);
-    //     clearInterval(intervalTestId);
-    //   };
-    // }
+      return () => {
+        clearInterval(intervalInfoId);
+        clearInterval(intervalTestId);
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -112,6 +131,7 @@ function MonitoringPage() {
     
         // Da API
         name: maquina.nome,
+        id: maquina.id,
         status: maquina.status === 2 ? 'Com Falha' : maquina.status === 0 ? 'Parado' : 'Funcionando',  
         message: 'Informações localizadas',
         progress: [
@@ -147,7 +167,39 @@ function MonitoringPage() {
       })
     })
     .then(response => response.json())
-    .then(json => resposta = json);
+    .then(json => {
+      console.log("Parar container: " + json);
+      resposta = json;
+    })
+    .catch(err => { 
+      console.error('Falha ao para container', err); 
+    });;
+
+    alert(resposta.mensagem);
+    console.log(resposta.mensagem);
+  }
+
+  const handleRetomarClick = (containerId) => {
+    console.log("Retomar container: " + containerId);
+    let resposta = {mensagem: "Teste"};
+    fetch(address+'/container/retomar', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        container_id: containerId,
+      })
+    })
+    .then(response => response.json())
+    .then(json => {
+      console.log("Retomar container: " + json);
+      resposta = json;
+    })
+    .catch(err => { 
+      console.error('Falha ao retomar container', err); 
+    });;
 
     alert(resposta.mensagem);
     console.log(resposta.mensagem);
@@ -155,7 +207,7 @@ function MonitoringPage() {
 
   const handleRemoverClick = (containerId) => {
     console.log("Remover container: " + containerId);
-    let resposta = {};
+    let resposta = {mensagem: "Teste"};
     fetch(address+'/container/remover', {
       method: 'POST',
       headers: {
@@ -167,7 +219,13 @@ function MonitoringPage() {
       })
     })
     .then(response => response.json())
-    .then(json => resposta = json);
+    .then(json => {
+      console.log("Remover container: " + json);
+      resposta = json;
+    })
+    .catch(err => { 
+      console.error('Falha ao remover container', err); 
+    });;
 
     alert(resposta.mensagem);
     console.log(resposta.mensagem);
@@ -181,7 +239,7 @@ function MonitoringPage() {
 
       <Row>
         {maquinas.map(
-          ({ bgColor, icon, name, status, message, progress, ...restProps }, index) => (
+          ({ bgColor, icon, name, id, status, message, progress, ...restProps }, index) => (
             <Col key={index} lg={4} md={6} sm={6} xs={12} className="mb-3">
               <IconWidget
                 bgColor={bgColor}
@@ -190,6 +248,9 @@ function MonitoringPage() {
                 status={status}
                 message={message}
                 progress={progress}
+                handleParar={() => handlePararClick(id)}
+                handleRemover={() => handleRemoverClick(id)}
+                handleRetomar={() => handleRetomarClick(id)}
                 {...restProps}
               />
             </Col>

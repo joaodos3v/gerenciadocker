@@ -3,7 +3,7 @@ import PropTypes from 'utils/propTypes';
 
 import classNames from 'classnames';
 
-import { Badge, Card, CardBody, CardText, CardTitle, CardSubtitle, Progress } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardText, CardTitle, CardSubtitle, Progress } from 'reactstrap';
 import Typography from '../Typography';
 import { MdCheck, MdClose } from 'react-icons/md';
 
@@ -16,6 +16,9 @@ const IconWidget = ({
   message,
   progress,
   className,
+  handleParar,
+  handleRemover,
+  handleRetomar,
   ...restProps
 }) => {
   
@@ -61,6 +64,9 @@ const IconWidget = ({
             </div>
           )
         })}
+        <Button outline color="primary" className="mr-3" onClick={handleParar} disabled={status === 'Parado' ? true : false}>Pausar</Button>
+        <Button outline color="secondary" className="mr-3" onClick={handleRetomar} disabled={status === 'Parado' ? false : true}>Retomar</Button>
+        <Button outline color="danger" onClick={handleRemover} disabled={status === 'Parado' ? false : true}>Excluir</Button>
       </CardBody>
     </Card>
   );
