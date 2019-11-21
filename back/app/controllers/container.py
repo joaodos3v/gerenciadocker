@@ -4,6 +4,7 @@ from app import app
 from app.models.container import Container
 from app.models.network import Network
 from app.models.adaptive import Adaptive
+from app.models.notificacao import Notificacao
 
 states = []
 
@@ -158,14 +159,25 @@ def container_consultar_network(network_id):
         list_container_informacoes = container_informacoes.split(" ")
         container_inpecionado      = container.inspecionar()
         estados_do_container       = container_inpecionado["State"]
-
         status_atual = 0 if estados_do_container["Paused"] else 1
+
         # sobrescrever o status atual se ele estiver rodando
         if status_atual > 0: # rodando
             for state in states:
                 if state["container_id"] == container_id:
                     if state["status"] == "FALHO":
                         status_atual = 2
+                        # enviar notificação
+                        notificacao_falha = Notificacao("Falha no container", "O container parou dvido à uma falha inesperada.")
+                        notificacao_falha.enviar()
+
+        if float(list_container_informacoes[1][:list_container_informacoes[1].index('%')]) >= 90: # cpu
+            notificacao_cpu = Notificacao("Excesso de consumo de processamento", "O container está consumindo uma quantidade alta de CPU.")
+            notificacao_cpu.enviar()
+        
+        if float(list_container_informacoes[2][:list_container_informacoes[2].index('MiB')]) >= 90: # ram
+            notificacao_ram = Notificacao("Excesso de consumo de memória", "O container está consumindo uma quantidade alta de RAM.")
+            notificacao_ram.enviar()
 
         dict_container_informacoes = {
             "id"        : container_id,
