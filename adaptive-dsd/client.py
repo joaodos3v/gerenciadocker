@@ -24,9 +24,7 @@ def EnviaRequisicao(cliente, lista):
         EnviarResposta(cliente, json_lista)
     elif opcao == 1:
         EnviarResposta(cliente, "info")
-        json_tested = ReceberResposta(cliente)
         json_state = ReceberResposta(cliente)
-        print("json_tested: " + json_tested)
         print("json_state: " + json_state)
 
 

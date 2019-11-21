@@ -36,6 +36,9 @@ def ReceberRequisicao(conexao):
     elif msg == "info":
         RetornaInformacao(conexao, False)
 
+    conexao.shutdown(socket.SHUT_RDWR)
+    conexao.close()
+
 
 def IniciarTeste(conexao):
     global maquinas
@@ -91,7 +94,6 @@ def TestarMaquina(index):
                 EnviarInformacao(maquina, json_tested)
                 EnviarInformacao(maquina, json_state)
 
-                maquina.close()
                 break
             else:
                 print("maquina com falha: " + str(index))
@@ -178,7 +180,6 @@ def DistribuirInformacao():
 
         EnviarInformacao(maquina, "keepInfo")
         RetornaInformacao(maquina, True)
-        maquina.close()
     else:
         print("Não há mais máquinas funcionando normalmente.")
 
@@ -207,7 +208,6 @@ def ManterInformacao(conexao):
 
         EnviarInformacao(maquina, "keepInfo")
         RetornaInformacao(maquina, True)
-        maquina.close()
 
 
 def RetornaInformacao(conexao, verificacao):
@@ -222,7 +222,6 @@ def RetornaInformacao(conexao, verificacao):
         EnviarInformacao(conexao, json_state)
     else:
         EnviarResposta(conexao, json_state)
-    conexao.close()
 
 
 def CriarConexao(host, porta):
@@ -277,7 +276,8 @@ def IniciarExecucao():
     while int(porta_host) > 0:
         print("\n\n\n")
         print("Aguardando conexão com socket...")
-        tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tcp = socket.socket()
+        tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         tupla = (ip_host, int(porta_host))
         tcp.bind(tupla)
         tcp.listen(1)
