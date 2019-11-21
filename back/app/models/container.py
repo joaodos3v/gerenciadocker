@@ -13,14 +13,14 @@ class Container(Model):
         return container_id
 
     def parar(self):
-        comando = 'docker stop %s' % self.id
+        comando = 'docker pause %s' % self.id
         container_id = self.executar_comando(comando)
         if container_id:
             return 1
         return 0
     
     def retomar(self):
-        comando = 'docker start %s' % self.id
+        comando = 'docker unpause %s' % self.id
         container_id = self.executar_comando(comando)
         if container_id:
             return 1
