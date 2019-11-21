@@ -137,6 +137,11 @@ def container_consultar(container_id):
 
 @app.route("/container/consultar/network/<network_id>", methods=['GET'])
 def container_consultar_network(network_id):
+    # Status:
+    # 0 -> parado
+    # 1 -> normal
+    # 2 -> falho
+
     global state    
     network = Network()
     network.id = network_id    
@@ -149,13 +154,17 @@ def container_consultar_network(network_id):
         container.id = container_id
         container_informacoes = container.consultar()
         list_container_informacoes = container_informacoes.split(" ")
+        container_inpecionado = container.inspecionar()
+        estados_do_container = container_inpecionado["State"]
+        status_atual = 0 if estados_do_container["Paused"] else 1
         dict_container_informacoes = {
             "id": container_id,
             "nome": atributos['Name'],
             "ipv4": atributos['IPv4Address'],
             "macaddress": atributos['MacAddress'],
             "cpu": list_container_informacoes[1],
-            "ram": list_container_informacoes[2]
+            "ram": list_container_informacoes[2],
+            "status": status_atual
         }
         containers.append(dict_container_informacoes)
 
