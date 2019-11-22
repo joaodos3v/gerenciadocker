@@ -12,11 +12,15 @@ class NewContainerForm extends React.Component {
     }
 
     this.updateInput = this.updateInput.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
-    
     
   updateInput(event){
     this.setState({nomeContainer : event.target.value})
+  }
+
+  handleSelect(event){
+    this.setState({distroMaquina : event.target.value})
   }
   
   handleSubmit = event => {
@@ -25,23 +29,27 @@ class NewContainerForm extends React.Component {
     console.log("Distro: " + this.state.distroMaquina + ", Nome: " + this.state.nomeContainer);
 
     let resposta = {mensagem: "Ok"};
-    // fetch(address+'/container/iniciar', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     nome: this.state.nomeContainer,
-    //     distro: this.state.distroMaquina,
-    //     versao: 'Latest',
-    //     network: nomeNetwork,
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(json => resposta = json);
-    alert(resposta.mensagem);
-    console.log(resposta.mensagem);
+    fetch(address+'/container/iniciar', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nome: this.state.nomeContainer,
+        distro: this.state.distroMaquina,
+        versao: 'adaptive-dsd',
+        network: nomeNetwork,
+      })
+    })
+    .then(response => response.json())
+    .then(json => {
+      alert(json.mensagem);
+      console.log(resposta.mensagem);
+    })
+    .catch(err => { 
+      console.error('Falha ao iniciar container', err); 
+    });;
   }
 
   render() {
@@ -61,12 +69,11 @@ class NewContainerForm extends React.Component {
           <Input type="text" name="container" onChange={this.updateInput}/>
           <br/>
           <Label for={distroLabel}>{distroLabel}</Label>
-          <Input type="select" name="select" >
-            <option>Distro 1</option>
-            <option>Distro 2</option>
-            <option>Distro 3</option>
-            <option>Distro 4</option>
-            <option>Distro 5</option>
+          <Input type="select" name="select" onChange={this.handleSelect}>
+            <option value="ubuntu">Ubuntu</option>
+            <option value="debian">Debian</option>
+            <option value="centos">CentOS</option>
+            <option value="alpine">Alpine</option>
           </Input>
         </FormGroup>
         <hr />
