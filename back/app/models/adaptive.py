@@ -4,22 +4,32 @@ class Adaptive:
     def __init__(self, hosts):
         self.hosts = hosts
 
-    def iniciar_conexao(self):
-        json_hosts = json.dumps(self.hosts)
+    def preparar_hosts(self):
+        hosts = []
+        for host in self.hosts:
+            hosts.append("%s:%s" % (host["ipv4"], host["porta"]))
+        return hosts
 
-        print(json_hosts)
+    def iniciar_conexao(self):
+        hosts = self.preparar_hosts()
+        json_hosts = json.dumps(hosts)
 
         cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        cliente.connect((self.hosts[0][:self.hosts[0].index(':')], int(self.hosts[0][self.hosts[0].index(':')+1:])))
+        cliente.connect((self.hosts[0]["ipv4"], self.hosts[0]["porta"]))
         cliente.send(pickle.dumps("info"))
-        states = pickle.loads(cliente.recv(1024))
+        states = json.loads(pickle.loads(cliente.recv(1024)))
+        print(states)
 
         time.sleep(1)
 
         cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        cliente.connect((self.hosts[0][:self.hosts[0].index(':')], int(self.hosts[0][self.hosts[0].index(':')+1:])))
+        cliente.connect((self.hosts[0]["ipv4"], self.hosts[0]["porta"]))
         cliente.send(pickle.dumps("start"))
         resposta = pickle.loads(cliente.recv(1024))
         cliente.send(pickle.dumps(json_hosts))        
+        
+        for i in range(len(states)):
+            state = states[i]
+            self.hosts[i]["status"] = state
 
-        return states
+        return self.hosts

@@ -1,3 +1,4 @@
+import json
 from app.models.model import Model
 
 class Container(Model):
@@ -13,14 +14,14 @@ class Container(Model):
         return container_id
 
     def parar(self):
-        comando = 'docker stop %s' % self.id
+        comando = 'docker pause %s' % self.id
         container_id = self.executar_comando(comando)
         if container_id:
             return 1
         return 0
     
     def retomar(self):
-        comando = 'docker start %s' % self.id
+        comando = 'docker unpause %s' % self.id
         container_id = self.executar_comando(comando)
         if container_id:
             return 1
@@ -36,5 +37,9 @@ class Container(Model):
     def consultar(self):
         comando = "docker stats --no-stream --format 'table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}' %s | grep %s | awk '{ print $1, $2, $3 }'" % (self.id, self.id)
         informacoes = self.executar_comando(comando)
-        if informacoes:
-            return informacoes
+        return informacoes if informacoes else None
+
+    def inspecionar(self):
+        comando = "docker inspect %s" % self.id
+        informacoes = self.executar_comando(comando)
+        return json.loads(informacoes)[0] if informacoes else None

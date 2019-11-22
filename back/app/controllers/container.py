@@ -4,6 +4,9 @@ from app import app
 from app.models.container import Container
 from app.models.network import Network
 from app.models.adaptive import Adaptive
+from app.models.notificacao import Notificacao
+
+states = []
 
 @app.route("/")
 def index():
@@ -137,25 +140,53 @@ def container_consultar(container_id):
 
 @app.route("/container/consultar/network/<network_id>", methods=['GET'])
 def container_consultar_network(network_id):
-    global state    
-    network = Network()
+    # Status:
+    # 0 -> parado
+    # 1 -> normal
+    # 2 -> falho
+
+    global states   
+    network    = Network()
     network.id = network_id    
     containers = []
     json_infos_network = network.consultar()
     json_containers = json_infos_network[0]['Containers']
     for container_id in json_containers:
-        atributos = json_containers[container_id]        
-        container = Container()
+        atributos    = json_containers[container_id]        
+        container    = Container()
         container.id = container_id
-        container_informacoes = container.consultar()
+        container_informacoes      = container.consultar()
         list_container_informacoes = container_informacoes.split(" ")
+        container_inpecionado      = container.inspecionar()
+        estados_do_container       = container_inpecionado["State"]
+        status_atual = 0 if estados_do_container["Paused"] else 1
+
+        # sobrescrever o status atual se ele estiver rodando
+        if status_atual > 0: # rodando
+            for state in states:
+                if state["container_id"] == container_id:
+                    if state["status"] == "FALHO":
+                        status_atual = 2
+                        # enviar notificação
+                        notificacao_falha = Notificacao("Falha no container", "O container parou dvido à uma falha inesperada.")
+                        notificacao_falha.enviar()
+
+        if float(list_container_informacoes[1][:list_container_informacoes[1].index('%')]) >= 90: # cpu
+            notificacao_cpu = Notificacao("Excesso de consumo de processamento", "O container está consumindo uma quantidade alta de CPU.")
+            notificacao_cpu.enviar()
+        
+        if float(list_container_informacoes[2][:list_container_informacoes[2].index('MiB')]) >= 90: # ram
+            notificacao_ram = Notificacao("Excesso de consumo de memória", "O container está consumindo uma quantidade alta de RAM.")
+            notificacao_ram.enviar()
+
         dict_container_informacoes = {
-            "id": container_id,
-            "nome": atributos['Name'],
-            "ipv4": atributos['IPv4Address'],
+            "id"        : container_id,
+            "nome"      : atributos['Name'],
+            "ipv4"      : atributos['IPv4Address'],
             "macaddress": atributos['MacAddress'],
-            "cpu": list_container_informacoes[1],
-            "ram": list_container_informacoes[2]
+            "cpu"       : list_container_informacoes[1],
+            "ram"       : list_container_informacoes[2],
+            "status"    : status_atual
         }
         containers.append(dict_container_informacoes)
 
@@ -176,11 +207,26 @@ def adaptive_iniciar(network_id):
         container = containers[container_id]
         ipv4 = container['IPv4Address']
         index_separador = ipv4.index('/')
-        ipv4_e_porta = "%s:%s" % (ipv4[:index_separador], 5001)
-        containers_ipv4.append(ipv4_e_porta)
+        # ipv4_e_porta = "%s:%s" % (ipv4[:index_separador], 5001)
+        dicionario = {
+            "container_id": container_id,
+            "ipv4": ipv4[:index_separador],
+            "porta": 5001,
+            "status": None
+        }
+        containers_ipv4.append(dicionario)
 
     adaptive = Adaptive(containers_ipv4)
-    global state
-    state = adaptive.iniciar_conexao()
+    global states
+    states = adaptive.iniciar_conexao()
 
-    return '1'
+    if states:
+        return jsonify({
+            "status": 1,
+            "mensagem": "O Adaptive foi iniciado com sucesso"
+        })
+
+    return jsonify({
+        "status": 0,
+        "mensagem": "Falha ao iniciar o adaptive"
+    })
