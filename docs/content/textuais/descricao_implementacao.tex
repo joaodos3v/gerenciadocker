@@ -116,11 +116,23 @@ de confirmação; caso contrário, irá apenas enviar as informações, sem espe
 \section{\textit{API}}
 \label{sec:api}
 
+A utilização de uma \textit{api} surgiu com a necessidade de um \textit{backend} flexível, que se comunicasse com processos do Sistema Operacional, através de \textit{syscalls} ou de \textit{sockets} e também com uma página \textit{web} (\textit{frontend}) através do protocolo \textit{HTTP}. Seu papel no projeto é funcionar como uma interface para o \textit{frontend}, abstraindo, facilitando e fazendo uma \aspas{ponte} entre o que ele precisa e o que o Sistema Operacional deve fazer.
 
+Devido à esses argumentos, foi decidido utilizar o \textit{Flask}, que é um \textit{framework} da linguagem \textit{Python} e funciona como um \textit{WebService}. 
+A soma da praticidade do \textit{Flask} (proporcionando toda a arquitetura em cima do protocolo \textit{HTTP}) e a robustez do próprio \textit{Python}, simplificou a conexão entre todas as partes do sistema e fez jus à escolha de termos uma \textit{Api Rest}.
 
+\subsection{\textit{Flask}}
+\label{sec:flask}
 
+Como anteriormente mencionado, a \textit{api} foi escrita em \textit{Flask}, cujo, possui uma caraterística interessante, ele é um \textit{MicroFramework}, ou seja, traz consigo somente o que é necessário para ser executado. O intuito dessa abordagem de \textit{MicroFramework} é fazer com que o programador monte sua própria arquitetura e não sobrecarregue seu projeto. 
 
+Outro ponto importante a ser mencionado, é que a Api adota o padrão \textit{MVC} (\textit{Model}, \textit{View} e \textit{Controller}), insentando-se da camada de \textit{View}, pois essa responsabilidade é do \textit{frontend}. A adoção desse padrão acabou facilitando muito o desenvolvimento, pois proporcionou um \textit{software} mais organizado e manuteível. O comportamento da \textit{api} dentro desse escopo será detalhado no próximo subcapítulo.
 
+\subsection{Arquitetura}
+
+A declaração das rotas da \textit{api} ficam dentro de suas \textit{controllers}, sempre mantendo uma semântica, por exemplo, na \textit{controller} \textbf{container} temos a rota \textbf{/container/iniciar}. As \textit{controllers} servem para receber o \textit{json} enviado pelo \textit{frontend}, validá-lo e por fim enviar uma resposta. Vale ressaltar, na declaração delas é possível restringir quais verbos do protocolo \textit{HTTP} são aceitos.
+
+As \textit{models} da aplicação tem a regra de negócio, as \textit{syscalls} e a comunicação via \textit{socket}. Para realizar as \textit{syscalls} foi necessário utilizar o \textit{subprocess}, uma biblioteca do \textit{Python} que permite a execução e a captura dos resultados. Outra dependência importante no projeto é o \textit{requests}, ele que permite o envio de um \textit{post} para o \textit{firebase}, que faz parte da arquitetura da \textit{PWA}. Por fim, temos a conexão via \textit{socket} com o \textit{Adaptive-DSD}, nela é enviado um conjunto de \textit{bytes} que fazem com que o algoritmo acima descrito seja executado, que por sua vez, retorna o estado atual dos containers.
 
 
 
@@ -234,3 +246,16 @@ Em razão disso, era necessário chamar a atenção dos responsáveis por manter
     \frame{\includegraphics[width=0.4\textwidth]{./content/textuais/imagens/pwa.jpeg}}
     \label{fig:aplicativo}
 \end{figure}
+
+% Docker-------------------------------------------------------------------
+\section{Docker}
+\label{sec:docker}
+
+O Docker é um pré-requisito para que a aplicação funcione, ou seja, ele deve estar presente no Sistema Operacional hospedeiro, pois é ele quem gerencia a criação dos containers e de suas respectivas networks. Apesar de ser apenas uma dependência do projeto, é necessário uma breve explicação de como ele é utilizado.
+
+É através das syscalls vindas da api (mencionadas anteriormente) que o Docker é requisitado, basicamente, a api chama um comando específico dele e ele responde com uma saída de sucesso ou falha. Vale ressaltar, a api funciona como uma interface web para o Docker, que por sua vez é uma interface para criação de LXC (Linux Containers).
+
+\subsection{Containers}
+\label{subsec:containers}
+
+A api possibilita a utilização de qualquer tipo de container, indiferente da sua distribuição Linux ou de qual processo está sendo executado dentro dele, porém, para que haja um monitoramento através do Adaptive-DSD, foi necessário a criação de alguns containers novos, todos eles tem o Adaptive-DSD rodando como processo principal. Esses containers estão divididos nas seguintes distribuições Linux: Ubuntu, Debian, Alpine e CentOs. Todos esses containers estão disponíveis no DockerHub e podem ser utilizados livremente.
