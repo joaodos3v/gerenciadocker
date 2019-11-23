@@ -136,6 +136,21 @@ As \textit{models} da aplicação tem a regra de negócio, as \textit{syscalls} 
 
 
 
+% Docker-------------------------------------------------------------------
+\section{\textit{Docker}}
+\label{sec:docker}
+
+O \textit{Docker} é um pré-requisito para que a aplicação funcione, ou seja, deve estar presente no Sistema Operacional hospedeiro, pois é ele quem gerencia a criação dos containers e de suas respectivas \textit{networks}. Devido à sua importância, dedicamos esse capítulo para que possamos explicar brevemente como ele está sendo utilizado.
+
+É através das \textit{syscalls} vindas da \textit{api} que o \textit{Docker} é acionado, basicamente, a \textit{api} executa um comando, por exemplo, \textbf{docker network create --driver bridge rede-de-teste} e ele responde se obteve sucesso ou falha. Vale ressaltar, a api funciona como uma interface \textit{web} para o \textit{Docker}, que por sua vez é uma interface para a criação dos LXC (\textit{Linux} Containers).
+
+\subsection{Containers}
+\label{subsec:containers}
+
+A api possibilita a utilização de qualquer tipo de container, indiferente da sua distribuição \textit{Linux} ou de qual processo está sendo executado dentro dele, porém, para que haja um monitoramento através do \textit{Adaptive-DSD}, foi necessário a criação de alguns containers personalizados, todos eles tem o \textit{Adaptive-DSD} rodando como processo principal. Esses containers estão divididos nas seguintes distribuições \textit{Linux}: \textbf{\textit{Ubuntu, Debian, Alpine e CentOs}}. O \textit{Dockerfile} (arquivo responsável por criar uma imagem) possui os comandos de criação dos quatro containers, o mesmo encontra-se dentro da pasta \textbf{\textit{/adaptive-dsd}} e possui comentários que guiam a sua utilização.
+
+
+
 % Frontend-------------------------------------------------------------------
 \section{\textit{Frontend}}
 \label{sec:frontend}
@@ -246,16 +261,3 @@ Em razão disso, era necessário chamar a atenção dos responsáveis por manter
     \frame{\includegraphics[width=0.4\textwidth]{./content/textuais/imagens/pwa.jpeg}}
     \label{fig:aplicativo}
 \end{figure}
-
-% Docker-------------------------------------------------------------------
-\section{Docker}
-\label{sec:docker}
-
-O Docker é um pré-requisito para que a aplicação funcione, ou seja, ele deve estar presente no Sistema Operacional hospedeiro, pois é ele quem gerencia a criação dos containers e de suas respectivas networks. Apesar de ser apenas uma dependência do projeto, é necessário uma breve explicação de como ele é utilizado.
-
-É através das syscalls vindas da api (mencionadas anteriormente) que o Docker é requisitado, basicamente, a api chama um comando específico dele e ele responde com uma saída de sucesso ou falha. Vale ressaltar, a api funciona como uma interface web para o Docker, que por sua vez é uma interface para criação de LXC (Linux Containers).
-
-\subsection{Containers}
-\label{subsec:containers}
-
-A api possibilita a utilização de qualquer tipo de container, indiferente da sua distribuição Linux ou de qual processo está sendo executado dentro dele, porém, para que haja um monitoramento através do Adaptive-DSD, foi necessário a criação de alguns containers novos, todos eles tem o Adaptive-DSD rodando como processo principal. Esses containers estão divididos nas seguintes distribuições Linux: Ubuntu, Debian, Alpine e CentOs. Todos esses containers estão disponíveis no DockerHub e podem ser utilizados livremente.
