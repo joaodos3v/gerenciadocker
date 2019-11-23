@@ -91,6 +91,40 @@ def container_parar():
         "mensagem": mensagem
     })
 
+@app.route("/container/retomar", methods=['POST'])
+def container_retomar():
+    container_id = None
+
+    json = request.get_json()
+
+    if not json:
+        return jsonify({
+            "status": 0,
+            "mensagem": "Não foi possível retomar o container"
+        })
+    
+    try:
+        container_id = json['container_id']
+    except:
+        return jsonify({
+            "status": 0,
+            "mensagem": 'O json deve possuir o campo "container_id"'
+        })
+
+    container = Container()
+    container.id = container_id
+    container_retomado = container.retomar()
+    
+    if container_retomado == 1:
+        mensagem = "Container retomado"
+    else:
+        mensagem = "Não foi possível retomar o container"
+    
+    return jsonify({
+        "status": container_retomado,
+        "mensagem": mensagem
+    })
+
 @app.route("/container/remover", methods=['POST'])
 def container_remover():
     container_id = None
@@ -223,10 +257,10 @@ def adaptive_iniciar(network_id):
     if states:
         return jsonify({
             "status": 1,
-            "mensagem": "O Adaptive foi iniciado com sucesso"
+            "mensagem": "O Adaptive foi executado com sucesso"
         })
 
     return jsonify({
         "status": 0,
-        "mensagem": "Falha ao iniciar o adaptive"
+        "mensagem": "Não foi possível capturar informações dos estados dos containers"
     })

@@ -14,6 +14,9 @@ class Adaptive:
         hosts = self.preparar_hosts()
         json_hosts = json.dumps(hosts)
 
+        if not hosts:
+            return []
+
         cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         cliente.connect((self.hosts[0]["ipv4"], self.hosts[0]["porta"]))
         cliente.send(pickle.dumps("info"))
@@ -30,6 +33,9 @@ class Adaptive:
         
         for i in range(len(states)):
             state = states[i]
-            self.hosts[i]["status"] = state
+            try:
+                self.hosts[i]["status"] = state
+            except:
+                print("Container nao localizado")
 
         return self.hosts
