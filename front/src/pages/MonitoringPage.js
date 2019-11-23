@@ -14,81 +14,44 @@ import {
 function MonitoringPage() {
   const [maquinasInfos, setMaquinasInfo] = useState([]);
   const [maquinas, setMaquinas] = useState([]);
-  const [network_id, setNetworkId] = useState(0);
   const nomeNetwork = 'dockerNetwork'; 
   const nomeDriver = 'bridge';
-  const address = 'http://localhost:5000';
+  const address = 'https://f35b1078.ngrok.io'; //http://localhost:5000
 
   useEffect(() => {
     let resposta = {status: 1, network_id: nomeNetwork};
-    fetch(address+'/network/criar', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nome: nomeNetwork,
-        driver: nomeDriver,
+    if (!localStorage.getItem('@gerenciadocker/dockerNetworkId')) {
+      fetch(address+'/network/criar', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome: nomeNetwork,
+          driver: nomeDriver,
+        })
       })
-    })
-    .then(response => response.json())
-    .then(json => {
-      console.log(json);
-      resposta = json;
-    })
-    .catch(err => { 
-      console.error('Falha ao iniciar rede', err); 
-    });
-    console.log(resposta);
-
-    // const maquinasNovas = [
-    // {
-    //   id: "1",
-    //   nome: "Postgres",
-    //   status: 0,
-    //   mensagem: "Informações localizadas",
-    //   cpu: "90%",
-    //   ram: "1024MB"
-    // },
-    // {
-    //   id: "2",
-    //   nome: "Apache",
-    //   status: 1,
-    //   mensagem: "Informações localizadas",
-    //   cpu: "50%",
-    //   ram: "4096MB"
-    // },
-    // {
-    //   id: "3",
-    //   nome: "Oracle",
-    //   status: 1,
-    //   mensagem: "Informações localizadas",
-    //   cpu: "10%",
-    //   ram: "512MB"
-    // },
-    // {
-    //   id: "4",
-    //   nome: "Python",
-    //   status: 2,
-    //   mensagem: "Informações localizadas",
-    //   cpu: "60%",
-    //   ram: "2048MB"
-    // },
-    // {
-    //   id: "5",
-    //   nome: "AppServer",
-    //   status: 0,
-    //   mensagem: "Informações localizadas",
-    //   cpu: "99%",
-    //   ram: "8000MB"
-    // }];
-    // setMaquinasInfo(maquinasNovas);
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        if (json.status > 0) {
+          resposta = json;
+          localStorage.setItem('@gerenciadocker/dockerNetworkId', resposta.network_id);
+        }
+      })
+      .catch(err => { 
+        console.error('Falha ao iniciar rede', err); 
+      });
+    }
+    console.log(localStorage.getItem('@gerenciadocker/dockerNetworkId'));
 
     if (resposta.status === 1) {
-      setNetworkId(resposta.network_id);
+      let networkId = resposta.network_id;
+      if (localStorage.getItem('@gerenciadocker/dockerNetworkId'))
+        networkId = localStorage.getItem('@gerenciadocker/dockerNetworkId');
       const intervalInfoId = setInterval(() => {
-        fetch(address+'/container/consultar/network/'+resposta.network_id)
+        fetch(address+'/container/consultar/network/'+networkId)
         .then(response => response.json())
         .then(json => {
           console.log(json);
@@ -100,8 +63,7 @@ function MonitoringPage() {
       }, 5000);
 
       const intervalTestId = setInterval(() => {
-        let resposta = "";
-        fetch(address+'/adaptive/iniciar/'+resposta.network_id)
+        fetch(address+'/adaptive/iniciar/'+networkId)
         .then(response => response.json())
         .then(json => {
           console.log(json);
@@ -174,8 +136,6 @@ function MonitoringPage() {
     .catch(err => { 
       console.error('Falha ao para container', err); 
     });;
-
-    alert(resposta.mensagem);
     console.log(resposta.mensagem);
   }
 
@@ -201,7 +161,6 @@ function MonitoringPage() {
       console.error('Falha ao retomar container', err); 
     });;
 
-    alert(resposta.mensagem);
     console.log(resposta.mensagem);
   }
 
@@ -227,7 +186,6 @@ function MonitoringPage() {
       console.error('Falha ao remover container', err); 
     });;
 
-    alert(resposta.mensagem);
     console.log(resposta.mensagem);
   }
 
