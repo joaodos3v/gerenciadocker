@@ -24,8 +24,7 @@ class NewContainerForm extends React.Component {
   }
   
   handleSubmit = event => {
-    let nomeNetwork = 'dockerNetwork';
-    let address = 'http://localhost:5000';
+    let address = 'https://f35b1078.ngrok.io'; //'http://localhost:5000'
     console.log("Distro: " + this.state.distroMaquina + ", Nome: " + this.state.nomeContainer);
 
     let resposta = {mensagem: "Ok"};
@@ -39,17 +38,16 @@ class NewContainerForm extends React.Component {
         nome: this.state.nomeContainer,
         distro: this.state.distroMaquina,
         versao: 'adaptive-dsd',
-        network: nomeNetwork,
+        network: localStorage.getItem('@gerenciadocker/dockerNetworkId'),
       })
     })
     .then(response => response.json())
     .then(json => {
-      alert(json.mensagem);
-      console.log(resposta.mensagem);
+      console.log(json.mensagem);
     })
     .catch(err => { 
       console.error('Falha ao iniciar container', err); 
-    });;
+    });
   }
 
   render() {
