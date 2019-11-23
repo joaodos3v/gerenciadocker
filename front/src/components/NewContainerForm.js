@@ -8,7 +8,7 @@ class NewContainerForm extends React.Component {
     
     this.state = {
       nomeContainer: '',
-      distroMaquina: '',
+      distroMaquina: 'ubuntu',
     }
 
     this.updateInput = this.updateInput.bind(this);
