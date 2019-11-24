@@ -190,28 +190,40 @@ def container_consultar_network(network_id):
         container    = Container()
         container.id = container_id
         container_informacoes      = container.consultar()
+
+        if not container_informacoes:
+            continue
+
         list_container_informacoes = container_informacoes.split(" ")
         container_inpecionado      = container.inspecionar()
-        estados_do_container       = container_inpecionado["State"]
+
+        if not container_inpecionado:
+            continue
+
+        estados_do_container = container_inpecionado["State"]
         status_atual = 0 if estados_do_container["Paused"] else 1
 
         # sobrescrever o status atual se ele estiver rodando
+        # print(states)
         if status_atual > 0: # rodando
-            for state in states:
+            for s in range(len(states)):
+                state = states[s]
                 if state["container_id"] == container_id:
                     if state["status"] == "FALHO":
                         status_atual = 2
-                        # enviar notificação
-                        notificacao_falha = Notificacao("Falha no container", "O container parou dvido à uma falha inesperada.")
-                        notificacao_falha.enviar()
+                        if state["notificar"] == 1:                            
+                            notificacao_falha = Notificacao("[%s]" % atributos['Name'], "Uma falha inesperada foi detectada.")
+                            if notificacao_falha.enviar():
+                                states[s]["notificar"] = 0
+                            
 
-        if float(list_container_informacoes[1][:list_container_informacoes[1].index('%')]) >= 90: # cpu
-            notificacao_cpu = Notificacao("Excesso de consumo de processamento", "O container está consumindo uma quantidade alta de CPU.")
-            notificacao_cpu.enviar()
+        # if float(list_container_informacoes[1][:list_container_informacoes[1].index('%')]) >= 90: # cpu
+        #     notificacao_cpu = Notificacao("Excesso de consumo de processamento", "O container está consumindo uma quantidade alta de CPU.")
+        #     notificacao_cpu.enviar()
         
-        if float(list_container_informacoes[2][:list_container_informacoes[2].index('MiB')]) >= 90: # ram
-            notificacao_ram = Notificacao("Excesso de consumo de memória", "O container está consumindo uma quantidade alta de RAM.")
-            notificacao_ram.enviar()
+        # if float(list_container_informacoes[2][:list_container_informacoes[2].index('MiB')]) >= 90: # ram
+        #     notificacao_ram = Notificacao("Excesso de consumo de memória", "O container está consumindo uma quantidade alta de RAM.")
+        #     notificacao_ram.enviar()
 
         dict_container_informacoes = {
             "id"        : container_id,

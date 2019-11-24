@@ -35,6 +35,10 @@ class Adaptive:
             state = states[i]
             try:
                 self.hosts[i]["status"] = state
+                if state == "FALHO":
+                    self.hosts[i]["notificar"] = 1
+                else:
+                    self.hosts[i]["notificar"] = 0
             except:
                 print("Container nao localizado")
 

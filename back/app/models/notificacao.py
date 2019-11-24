@@ -25,7 +25,7 @@ class Notificacao:
             'Authorization': 'key=AAAAofhTans:APA91bH4loh0DwPxz3A_yQOp2ZVKP67coiYKvF6_ACUU_vcc6HmaWciDXl0j07xq9gJ6NkqaikId6X9Gj0YAA1phY-ZOCrzge_2Z7gYqFc-eE7MhZv8TjIB6UJfEHH887MIKeYrPKeOJ'
             }
         notificacao = {
-            "to": "efMCGFZO2TTRq9l0OfMstF:APA91bFa--jn8LtmsGsAPwuQ6B_SsvH6UC4Q7EsYZcqJfGIF7ifxLzVB5S5GnMNQtHiRFmpucU99m2t_t7oOpUV8V0As3zoL0cN40Sb1hT-Rt9gqIBgT1AsoruFobL9xSG-yYmn24EsK",
+            "to": "fTrkXafqkTICWYorL2DMCQ:APA91bHdlT72HcUBaa9DgWbPHOpBlDuYVsoErJySnnI9FJtVgWlL0osep8shbvUmpg5kceMG9f-wEepB_pPwIAn110j23H8kJNshuRU0ZgMOYREGR19PvyPT2x7GjpuGAKO7mv8kRL11",
             "notification": {
                 "title": "%s" % self.titulo,
                 "body": "%s" % self.mensagem,
@@ -34,4 +34,9 @@ class Notificacao:
             }
         }
         r = requests.post(url, data=json.dumps(notificacao), headers=headers)
-        print(r.text)
+        resposta = json.loads(r.text)
+        # print(resposta)
+        if resposta:
+            if resposta['success'] == 1:
+                return True        
+        return False
