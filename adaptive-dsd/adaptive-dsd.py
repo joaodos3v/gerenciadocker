@@ -110,7 +110,7 @@ def TestarMaquina(index):
 
 def RealizarVerificacao(conexao):
     # se tem que fazer alguma coisa aqui
-    erro = random.randint(0, 5)
+    erro = random.randint(0, 3)
     if erro == 1:
         print('Máquina com erro!')
         EnviarResposta(conexao, "ERROR")
