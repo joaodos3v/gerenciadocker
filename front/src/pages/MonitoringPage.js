@@ -60,7 +60,7 @@ function MonitoringPage() {
         .catch(err => { 
           console.error('Falha ao receber dados', err); 
         });
-      }, 5000);
+      }, 3000);
 
       const intervalTestId = setInterval(() => {
         fetch(address+'/adaptive/iniciar/'+networkId)
