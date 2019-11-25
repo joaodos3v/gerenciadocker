@@ -75,7 +75,7 @@ class Header extends React.Component {
             <MdClearAll size={25} />
           </Button>
         </Nav>
-        <Nav navbar className={bem.e('nav-right')}>
+        <Nav navbar className={bem.e('nav-right')} id="BtnNewContainer" style={{'display': 'none'}}>
           <Button outline onClick={this.toggleModal}>
             <MdAddToQueue size={25} /> &nbsp; NOVO CONTAINER
           </Button>

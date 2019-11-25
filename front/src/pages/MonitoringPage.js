@@ -1,6 +1,6 @@
 import Page from 'components/Page';
 import { IconWidget } from 'components/Widget';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Col,
   Row,
@@ -19,6 +19,9 @@ function MonitoringPage() {
   const address = 'https://f35b1078.ngrok.io'; //http://localhost:5000
 
   useEffect(() => {
+    const btn = document.getElementById('BtnNewContainer');
+    btn.style.display = 'block';
+
     let resposta = {status: 1, network_id: nomeNetwork};
     if (!localStorage.getItem('@gerenciadocker/dockerNetworkId')) {
       fetch(address+'/network/criar', {
