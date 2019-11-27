@@ -135,7 +135,7 @@ A soma da praticidade do \textit{Flask} (proporcionando toda a arquitetura em ci
 
 Como anteriormente mencionado, a \textit{api} foi escrita em \textit{Flask}, cujo, possui uma caraterística interessante, ele é um \textit{MicroFramework}, ou seja, traz consigo somente o que é necessário para ser executado. O intuito dessa abordagem de \textit{MicroFramework} é fazer com que o programador monte sua própria arquitetura e não sobrecarregue seu projeto. 
 
-Outro ponto importante a ser mencionado, é que a Api adota o padrão \textit{MVC} (\textit{Model}, \textit{View} e \textit{Controller}), insentando-se da camada de \textit{View}, pois essa responsabilidade é do \textit{frontend}. A adoção desse padrão acabou facilitando muito o desenvolvimento, pois proporcionou um \textit{software} mais organizado e manuteível. O comportamento da \textit{api} dentro desse escopo será detalhado no próximo subcapítulo.
+Outro ponto importante a ser mencionado, é que a Api adota o padrão \textit{MVC} (\textit{Model}, \textit{View} e \textit{Controller}), insentando-se da camada de \textit{View}, pois essa responsabilidade é do \textit{frontend}. A adoção desse padrão acabou facilitando muito o desenvolvimento, pois proporcionou um \textit{software} mais organizado e manutenível. O comportamento da \textit{api} dentro desse escopo será detalhado no próximo subcapítulo.
 
 \subsection{Arquitetura}
 
@@ -149,14 +149,14 @@ As \textit{models} da aplicação tem a regra de negócio, as \textit{syscalls} 
 \section{\textit{Docker}}
 \label{sec:docker}
 
-O \textit{Docker} é um pré-requisito para que a aplicação funcione, ou seja, deve estar presente no Sistema Operacional hospedeiro, pois é ele quem gerencia a criação dos containers e de suas respectivas \textit{networks}. Devido à sua importância, dedicamos esse capítulo para que possamos explicar brevemente como ele está sendo utilizado.
+O \textit{Docker} é um pré-requisito para que a aplicação funcione, ou seja, deve estar presente no Sistema Operacional hospedeiro, pois é ele quem gerencia a criação dos \containers{} e de suas respectivas \textit{networks}. Devido à sua importância, dedicamos esse capítulo para que possamos explicar brevemente como ele está sendo utilizado.
 
-É através das \textit{syscalls} vindas da \textit{api} que o \textit{Docker} é acionado, basicamente, a \textit{api} executa um comando, por exemplo, \textbf{docker network create --driver bridge rede-de-teste} e ele responde se obteve sucesso ou falha. Vale ressaltar, a api funciona como uma interface \textit{web} para o \textit{Docker}, que por sua vez é uma interface para a criação dos LXC (\textit{Linux} Containers).
+É através das \textit{syscalls} vindas da \textit{api} que o \textit{Docker} é acionado, basicamente, a \textit{api} executa um comando, por exemplo, \textbf{docker network create --driver bridge rede-de-teste} e ele responde se obteve sucesso ou falha. Vale ressaltar, a api funciona como uma interface \textit{web} para o \textit{Docker}, que por sua vez é uma interface para a criação dos \textit{LXC} (\textit{Linux Containers}).
 
-\subsection{Containers}
+\subsection{\textit{Containers}}
 \label{subsec:containers}
 
-A api possibilita a utilização de qualquer tipo de container, indiferente da sua distribuição \textit{Linux} ou de qual processo está sendo executado dentro dele, porém, para que haja um monitoramento através do \textit{Adaptive-DSD}, foi necessário a criação de alguns containers personalizados, todos eles tem o \textit{Adaptive-DSD} rodando como processo principal. Esses containers estão divididos nas seguintes distribuições \textit{Linux}: \textbf{\textit{Ubuntu, Debian, Alpine e CentOs}}. O \textit{Dockerfile} (arquivo responsável por criar uma imagem) possui os comandos de criação dos quatro containers, o mesmo encontra-se dentro da pasta \textbf{\textit{/adaptive-dsd}} e possui comentários que guiam a sua utilização.
+A api possibilita a utilização de qualquer tipo de \textit{container}, indiferente da sua distribuição \textit{Linux} ou de qual processo está sendo executado dentro dele, porém, para que haja um monitoramento através do \textit{Adaptive-DSD}, foi necessário a criação de alguns \containers{} personalizados, todos eles tem o \textit{Adaptive-DSD} rodando como processo principal. Esses \containers{} estão divididos nas seguintes distribuições \textit{Linux}: \textbf{\textit{Ubuntu, Debian, Alpine e CentOs}}. O \textit{Dockerfile} (arquivo responsável por criar uma imagem) possui os comandos de criação dos quatro \containers{}, o mesmo encontra-se dentro da pasta \textbf{\textit{/adaptive-dsd}} e possui comentários que guiam a sua utilização.
 
 
 
