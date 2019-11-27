@@ -72,6 +72,9 @@ class NewContainerForm extends React.Component {
             <option value="debian">Debian</option>
             <option value="centos">CentOS</option>
             <option value="alpine">Alpine</option>
+            <option value="flask">Flask</option>
+            <option value="apache2">Apache</option>
+            <option value="python">Python</option>
           </Input>
         </FormGroup>
         <hr />
