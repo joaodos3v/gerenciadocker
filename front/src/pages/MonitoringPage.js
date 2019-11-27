@@ -16,7 +16,7 @@ function MonitoringPage() {
   const [maquinas, setMaquinas] = useState([]);
   const nomeNetwork = 'dockerNetwork'; 
   const nomeDriver = 'bridge';
-  const address = 'https://f35b1078.ngrok.io'; //http://localhost:5000
+  const address = 'http://localhost:5000';
 
   useEffect(() => {
     const btn = document.getElementById('BtnNewContainer');
@@ -98,7 +98,7 @@ function MonitoringPage() {
         name: maquina.nome,
         id: maquina.id,
         status: maquina.status === 2 ? 'Com Falha' : maquina.status === 0 ? 'Parado' : 'Funcionando',  
-        message: 'Informações localizadas',
+        message: maquina.ipv4,
         progress: [
           {
             label: "CPU",

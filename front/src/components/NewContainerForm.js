@@ -24,7 +24,7 @@ class NewContainerForm extends React.Component {
   }
   
   handleSubmit = event => {
-    let address = 'https://f35b1078.ngrok.io'; //'http://localhost:5000'
+    let address = 'http://localhost:5000';
     console.log("Distro: " + this.state.distroMaquina + ", Nome: " + this.state.nomeContainer);
 
     let resposta = {mensagem: "Ok"};
