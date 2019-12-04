@@ -8,7 +8,7 @@ class NewContainerForm extends React.Component {
     
     this.state = {
       nomeContainer: '',
-      distroMaquina: 'ubuntu',
+      distroMaquina: 'viniciusandd/ubuntu',
     }
 
     this.updateInput = this.updateInput.bind(this);
@@ -68,13 +68,13 @@ class NewContainerForm extends React.Component {
           <br/>
           <Label for={distroLabel}>{distroLabel}</Label>
           <Input type="select" name="select" onChange={this.handleSelect}>
-            <option value="ubuntu">Ubuntu</option>
-            <option value="debian">Debian</option>
-            <option value="centos">CentOS</option>
-            <option value="alpine">Alpine</option>
-            <option value="flask">Flask</option>
-            <option value="apache2">Apache</option>
-            <option value="python">Python</option>
+            <option value="viniciusandd/ubuntu">Ubuntu</option>
+            <option value="viniciusandd/debian">Debian</option>
+            <option value="viniciusandd/centos">CentOS</option>
+            <option value="viniciusandd/alpine">Alpine</option>
+            <option value="viniciusandd/flask">Flask</option>
+            <option value="viniciusandd/apache2">Apache</option>
+            <option value="viniciusandd/python">Python</option>
           </Input>
         </FormGroup>
         <hr />
